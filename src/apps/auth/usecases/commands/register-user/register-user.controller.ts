@@ -33,6 +33,11 @@ export class RegisterUserController extends ControllerBase {
   })
   @Post('')
   async register(@Body() data: RegisterDto) {
-    return (await this.registerUserUseCase.register(data)).value;
+    const result = await this.registerUserUseCase.register(data);
+    if (result.isFailure) {
+      return this.handleErrorResponse(result.error);
+    }
+
+    return result.value;
   }
 }

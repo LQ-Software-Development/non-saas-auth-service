@@ -1,5 +1,11 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { ApiBadRequestResponse, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBadRequestResponse,
+  ApiCreatedResponse,
+  ApiInternalServerErrorResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 import { ControllerBase } from 'src/core/application/controller.base';
 import { LoginUserUseCase } from './login-user.usecase';
 import { LoginUserDto } from './login-user.dto';
@@ -27,6 +33,11 @@ export class LoginUserController extends ControllerBase {
   })
   @Post('')
   async login(@Body() data: LoginUserDto) {
-    return (await this.loginUserUseCase.login(data)).value;
+    const result = await this.loginUserUseCase.login(data);
+    if (result.isFailure) {
+      return this.handleErrorResponse(result.error);
+    }
+
+    return result.value;
   }
 }

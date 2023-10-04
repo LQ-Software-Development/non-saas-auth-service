@@ -11,7 +11,7 @@ import { ChangePasswordDto } from './change-user-password.dto';
 import { ChangeUserPassowrdUseCase } from './change-user-password.usecase';
 
 @Controller('recovery')
-@ApiTags('password')
+@ApiTags('recovery')
 export class ChangeUserPassowrdController extends ControllerBase {
   constructor(
     private readonly changeUserPasswordUseCase: ChangeUserPassowrdUseCase,
