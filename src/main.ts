@@ -1,8 +1,19 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
+import { AppModule } from './apps/app.module';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  await app.listen(3000);
+  const swaggerConfig = new DocumentBuilder()
+    .setTitle('Microserviço de Autenticação')
+    .setDescription(
+      'Microserviço de Autenticação usando: Nestjs, Swagger, MongoDB, Mongoose e DDD',
+    )
+    .setVersion('1.0')
+    .build();
+
+  const document = SwaggerModule.createDocument(app, swaggerConfig);
+  SwaggerModule.setup('docs', app, document);
+  await app.listen(process.env.AUTH_URL);
 }
 bootstrap();
