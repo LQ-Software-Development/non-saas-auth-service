@@ -13,7 +13,7 @@ export class ChangeUserPassowrdUseCase {
   ) {}
 
   async changePassword(data: ChangePasswordDto): Promise<any> {
-    const user = await this.userRepository.findByEmail(data.email);
+    let user = await this.userRepository.findByEmail(data.email);
 
     if (!user) {
       return Result.fail(new ForbiddenException('User existent'));
@@ -23,8 +23,16 @@ export class ChangeUserPassowrdUseCase {
       return Result.fail(new ForbiddenException('User of password incorrect'));
     }
 
+    const newPasswordHash = bcrypt.hashSync(data.newPassword, 10)
+    user.password = newPasswordHash
+
+    await this.userRepository.update(
+      user,
+      user.id,
+    )
+
     return Result.ok({
-      message: 'Password changed successfully',
+      message: 'Password changed successfully'
     });
   }
 }
