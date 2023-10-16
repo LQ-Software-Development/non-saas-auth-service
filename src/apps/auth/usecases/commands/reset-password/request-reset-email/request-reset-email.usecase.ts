@@ -4,7 +4,9 @@ import { UserRepositoryInterface } from 'src/apps/auth/repositories/user.reposit
 import { Result } from 'src/core/application/result';
 import { NotFoundException } from 'src/core/exceptions';
 import { ResponseResetEmailDto } from './request-reset-email.dto';
-import { sendEmail } from 'src/apps/auth/database/providers/email/email.provider';
+import { emailProvider } from 'src/apps/auth/providers/mailer/email.provider';
+import { emailProviderInterface } from 'src/apps/auth/providers/mailer/email.provider.interface';
+// import { sendEmail } from 'src/apps/auth/providers/email/email.provider';
 @Injectable()
 export class RequestResetEmailUseCase {
   constructor(
@@ -12,6 +14,8 @@ export class RequestResetEmailUseCase {
     private readonly userRepository: UserRepositoryInterface,
     @Inject('jwt-service')
     private readonly jwtService: JwtService,
+    @Inject('email-provider')
+    private readonly emailProvider: emailProviderInterface,
   ) {}
 
   async requestResetEmail(
@@ -40,7 +44,8 @@ export class RequestResetEmailUseCase {
       subject: 'Forgot Password Link',
       html: url,
     };
-    await sendEmail(data);
+    
+    this.emailProvider.sendMail(data);
   
     return Result.ok<ResponseResetEmailDto>({ token: token });
   }
