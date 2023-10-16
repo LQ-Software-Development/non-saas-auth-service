@@ -1,14 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { UserRepositoryInterface } from 'src/apps/auth/repositories/user.repository.interface';
 import { Result } from 'src/core/application/result';
-import {
-  RequestResetEmailDto,
-  ResponseResetEmailDto,
-} from './request-reset-email.dto';
 import { NotFoundException } from 'src/core/exceptions';
-import { JwtService } from '@nestjs/jwt';
-import { MailerService } from '@nestjs-modules/mailer';
-
+import { ResponseResetEmailDto } from './request-reset-email.dto';
+import { sendEmail } from 'src/apps/auth/database/providers/email/email.provider';
 @Injectable()
 export class RequestResetEmailUseCase {
   constructor(
@@ -16,7 +12,6 @@ export class RequestResetEmailUseCase {
     private readonly userRepository: UserRepositoryInterface,
     @Inject('jwt-service')
     private readonly jwtService: JwtService,
-    @Inject('email-provider') private readonly mailerService: MailerService,
   ) {}
 
   async requestResetEmail(
@@ -39,15 +34,14 @@ export class RequestResetEmailUseCase {
 
     const url = `Hi, Please follow this link to reset your password. This is valid for 10 minutes. <a href="http://localhost:${process.env.AUTH_URL}/reset-password/${token}">Click here</a>`;
     const data = {
-      to: email,
-      text: "Hey User",
+      to: user.email,
+      text: 'Hey User',
       from: 'Hey <abc@gmail.com>',
-      subject: "Forgot Password Link",
+      subject: 'Forgot Password Link',
       html: url,
     };
-    console.log(data);
-    await this.mailerService.sendMail(data);
-
+    await sendEmail(data);
+  
     return Result.ok<ResponseResetEmailDto>({ token: token });
   }
 }
