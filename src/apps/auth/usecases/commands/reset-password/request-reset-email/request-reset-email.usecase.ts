@@ -6,7 +6,7 @@ import { NotFoundException } from 'src/core/exceptions';
 import { ResponseResetEmailDto } from './request-reset-email.dto';
 import { emailProvider } from 'src/apps/auth/providers/mailer/email.provider';
 import { emailProviderInterface } from 'src/apps/auth/providers/mailer/email.provider.interface';
-// import { sendEmail } from 'src/apps/auth/providers/email/email.provider';
+
 @Injectable()
 export class RequestResetEmailUseCase {
   constructor(
