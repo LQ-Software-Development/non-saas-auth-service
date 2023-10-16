@@ -11,7 +11,7 @@ import { ChangePasswordDto } from './change-user-password.dto';
 import { ChangeUserPassowrdUseCase } from './change-user-password.usecase';
 
 @Controller('recovery')
-@ApiTags('recovery')
+@ApiTags('Recovery')
 export class ChangeUserPassowrdController extends ControllerBase {
   constructor(
     private readonly changeUserPasswordUseCase: ChangeUserPassowrdUseCase,
@@ -34,7 +34,7 @@ export class ChangeUserPassowrdController extends ControllerBase {
     description: 'Erro interno na hora de persistir o anuncio',
   })
   @Put('password')
-  async changeUserPassword(@Body() data: ChangePasswordDto): Promise<any> {
+  async changeUserPassword(@Body() data: ChangePasswordDto){
     const result = await this.changeUserPasswordUseCase.changePassword(data);
     if (result.isFailure) {
       return this.handleErrorResponse(result.error);

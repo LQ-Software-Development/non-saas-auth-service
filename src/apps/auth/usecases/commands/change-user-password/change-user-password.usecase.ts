@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ChangePasswordDto } from './change-user-password.dto';
-import { UserRepositoryInterface } from 'src/apps/auth/repositories/user.repository..interface';
+import { UserRepositoryInterface } from 'src/apps/auth/repositories/user.repository.interface';
 import { Result } from 'src/core/application/result';
 import { ForbiddenException } from 'src/core/exceptions';
 import * as bcrypt from 'bcrypt';
