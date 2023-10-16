@@ -22,7 +22,7 @@ let ChangeUserPassowrdUseCase = class ChangeUserPassowrdUseCase {
         this.userRepository = userRepository;
     }
     async changePassword(data) {
-        let user = await this.userRepository.findByEmail(data.email);
+        const user = await this.userRepository.findByEmail(data.email);
         if (!user) {
             return result_1.Result.fail(new exceptions_1.ForbiddenException('User existent'));
         }
@@ -33,7 +33,7 @@ let ChangeUserPassowrdUseCase = class ChangeUserPassowrdUseCase {
         user.password = newPasswordHash;
         await this.userRepository.update(user, user.id);
         return result_1.Result.ok({
-            message: 'Password changed successfully'
+            message: 'Password changed successfully',
         });
     }
 };
