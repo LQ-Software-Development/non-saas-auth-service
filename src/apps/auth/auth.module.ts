@@ -12,6 +12,8 @@ import { RegisterUserController } from './usecases/commands/register-user/regist
 import { RegisterUserUseCase } from './usecases/commands/register-user/register-user.usecase';
 import { RequestResetEmailController } from './usecases/commands/reset-password/request-reset-email/request-reset-email.controller';
 import { RequestResetEmailUseCase } from './usecases/commands/reset-password/request-reset-email/request-reset-email.usecase';
+import { RequestResetPasswordController } from './usecases/commands/reset-password/request-reset-password/request-reset-password.controller';
+import { RequestResetPasswordUseCase } from './usecases/commands/reset-password/request-reset-password/request-reset-password.usecase';
 
 @Module({
   controllers: [
@@ -19,12 +21,14 @@ import { RequestResetEmailUseCase } from './usecases/commands/reset-password/req
     RegisterUserController,
     ChangeUserPassowrdController,
     RequestResetEmailController,
+    RequestResetPasswordController,
   ],
   providers: [
     LoginUserUseCase,
     RegisterUserUseCase,
     ChangeUserPassowrdUseCase,
     RequestResetEmailUseCase,
+    RequestResetPasswordUseCase,
     {
       provide: 'user-repository',
       useClass: UserRepository,
