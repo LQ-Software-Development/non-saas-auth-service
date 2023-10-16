@@ -11,8 +11,8 @@ import { ChangeUserPassowrdUseCase } from './usecases/commands/change-user-passw
 import { ChangeUserPassowrdController } from './usecases/commands/change-user-password/change-user-password.controller';
 import { RequestResetEmailController } from './usecases/commands/reset-password/request-reset-email/request-reset-email.controller';
 import { RequestResetEmailUseCase } from './usecases/commands/reset-password/request-reset-email/request-reset-email.usecase';
-import { emailProvider } from './database/providers/email/email.provider';
-import { MailerModule } from '@nestjs-modules/mailer';
+import { emailTransporter } from './providers/mailer/email.provider';
+
 
 @Module({
   controllers: [
@@ -41,21 +41,9 @@ import { MailerModule } from '@nestjs-modules/mailer';
     },
     {
       provide: 'email-provider',
-      useFactory: () => {
-        MailerModule.forRoot({
-          transport: {
-            host: process.env.NODEMAILER_HOST,
-            port: process.env.NODEMAILER_PORT,
-            auth: {
-              user: process.env.NODEMAILER_USER,
-              pass: process.env.NODEMAILER_PASSWORD,
-            },
-          },
-        });
-      },
+      useValue: emailTransporter,
     },
     ...userSchemaProviders,
-    ...emailProvider,
     ...databaseProviders,
   ],
 })

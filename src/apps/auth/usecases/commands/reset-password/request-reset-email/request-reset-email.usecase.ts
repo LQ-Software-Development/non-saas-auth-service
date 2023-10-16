@@ -7,7 +7,9 @@ import {
 } from './request-reset-email.dto';
 import { NotFoundException } from 'src/core/exceptions';
 import { JwtService } from '@nestjs/jwt';
-import { MailerService } from '@nestjs-modules/mailer';
+import * as nodemailer from 'nodemailer';
+import { emailTransporter } from 'src/apps/auth/providers/mailer/email.provider';
+
 
 @Injectable()
 export class RequestResetEmailUseCase {
@@ -16,7 +18,8 @@ export class RequestResetEmailUseCase {
     private readonly userRepository: UserRepositoryInterface,
     @Inject('jwt-service')
     private readonly jwtService: JwtService,
-    @Inject('email-provider') private readonly mailerService: MailerService,
+    @Inject('email-provider')
+    private readonly emailProvider: nodemailer.Transporter,
   ) {}
 
   async requestResetEmail(
@@ -46,7 +49,15 @@ export class RequestResetEmailUseCase {
       html: url,
     };
     console.log(data);
-    await this.mailerService.sendMail(data);
+    
+    await this.emailProvider.sendMail(data, (err, info) => {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(info);
+        }
+      }
+    );
 
     return Result.ok<ResponseResetEmailDto>({ token: token });
   }
