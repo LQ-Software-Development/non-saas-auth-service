@@ -11,7 +11,7 @@ import { LoginUserUseCase } from './login-user.usecase';
 import { LoginUserDto } from './login-user.dto';
 
 @Controller('login')
-@ApiTags('autenticação')
+@ApiTags('Autenticação')
 export class LoginUserController extends ControllerBase {
   constructor(private readonly loginUserUseCase: LoginUserUseCase) {
     super();

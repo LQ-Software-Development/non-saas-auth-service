@@ -11,7 +11,7 @@ import {
 import { RegisterDto } from './register-user.dto';
 
 @Controller('registro')
-@ApiTags('autenticação')
+@ApiTags('Autenticação')
 export class RegisterUserController extends ControllerBase {
   constructor(private readonly registerUserUseCase: RegisterUserUseCase) {
     super();

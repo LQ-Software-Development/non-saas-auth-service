@@ -1,8 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { UserRepositoryInterface } from '../user.repository..interface';
+import { User, UserRepositoryInterface } from '../user.repository.interface';
 import { Result } from 'src/core/application/result';
 import {
-  User,
   UserSchemaInterface,
 } from '../../database/providers/schema/user.schema';
 import { Model } from 'mongoose';
@@ -31,6 +30,11 @@ export class UserRepository implements UserRepositoryInterface {
     const user = await this.userModel.findByIdAndUpdate(id, data, {
       new: true,
     });
+    return Result.ok(user);
+  }
+
+  async findById(id: string): Promise<Result<User>> {
+    const user = await this.userModel.findById(id);
     return Result.ok(user);
   }
 }
