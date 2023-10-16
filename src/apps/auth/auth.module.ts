@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { databaseProviders } from './database/providers/database.provider';
-import { emailProvider } from './database/providers/email/email.provider';
+import { emailProvider } from './providers/mailer/email.provider';
 import { userSchemaProviders } from './database/providers/schema/user.schema';
 import { UserRepository } from './repositories/implements/user.respository';
 import { ChangeUserPassowrdController } from './usecases/commands/change-user-password/change-user-password.controller';
@@ -38,8 +38,11 @@ import { RequestResetEmailUseCase } from './usecases/commands/reset-password/req
         });
       },
     },
+    {
+      provide: 'email-provider',
+      useClass: emailProvider,
+    },
     ...userSchemaProviders,
-    ...emailProvider,
     ...databaseProviders,
   ],
 })
