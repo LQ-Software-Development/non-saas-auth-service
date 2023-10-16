@@ -32,7 +32,7 @@ export class RequestResetEmailUseCase {
         sub: user.id,
       },
       {
-        expiresIn: '10s',
+        expiresIn: '30m',
       },
     );
 
