@@ -12,6 +12,8 @@ async function bootstrap() {
     .setVersion('1.0')
     .build();
 
+  app.enableCors();
+
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('docs', app, document);
   await app.listen(process.env.AUTH_PORT);
