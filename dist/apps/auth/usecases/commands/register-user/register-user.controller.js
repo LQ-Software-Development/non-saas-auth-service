@@ -54,7 +54,7 @@ __decorate([
 ], RegisterUserController.prototype, "register", null);
 RegisterUserController = __decorate([
     (0, common_1.Controller)('registro'),
-    (0, swagger_1.ApiTags)('autenticação'),
+    (0, swagger_1.ApiTags)('Autenticação'),
     __metadata("design:paramtypes", [register_user_usecase_1.RegisterUserUseCase])
 ], RegisterUserController);
 exports.RegisterUserController = RegisterUserController;

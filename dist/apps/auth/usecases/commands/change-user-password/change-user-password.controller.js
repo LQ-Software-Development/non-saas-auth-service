@@ -54,7 +54,7 @@ __decorate([
 ], ChangeUserPassowrdController.prototype, "changeUserPassword", null);
 ChangeUserPassowrdController = __decorate([
     (0, common_1.Controller)('recovery'),
-    (0, swagger_1.ApiTags)('recovery'),
+    (0, swagger_1.ApiTags)('Recovery'),
     __metadata("design:paramtypes", [change_user_password_usecase_1.ChangeUserPassowrdUseCase])
 ], ChangeUserPassowrdController);
 exports.ChangeUserPassowrdController = ChangeUserPassowrdController;

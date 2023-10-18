@@ -12,19 +12,19 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LoginUserController = void 0;
+exports.RequestResetEmailController = void 0;
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
-const controller_base_1 = require("../../../../../core/application/controller.base");
-const login_user_usecase_1 = require("./login-user.usecase");
-const login_user_dto_1 = require("./login-user.dto");
-let LoginUserController = class LoginUserController extends controller_base_1.ControllerBase {
-    constructor(loginUserUseCase) {
+const controller_base_1 = require("../../../../../../core/application/controller.base");
+const request_reset_email_usecase_1 = require("./request-reset-email.usecase");
+const request_reset_email_dto_1 = require("./request-reset-email.dto");
+let RequestResetEmailController = class RequestResetEmailController extends controller_base_1.ControllerBase {
+    constructor(requestResetEmailUseCase) {
         super();
-        this.loginUserUseCase = loginUserUseCase;
+        this.requestResetEmailUseCase = requestResetEmailUseCase;
     }
-    async login(data) {
-        const result = await this.loginUserUseCase.login(data);
+    async requestResetEmail(data) {
+        const result = await this.requestResetEmailUseCase.requestResetEmail(data.email);
         if (result.isFailure) {
             return this.handleErrorResponse(result.error);
         }
@@ -32,15 +32,18 @@ let LoginUserController = class LoginUserController extends controller_base_1.Co
     }
 };
 __decorate([
-    (0, swagger_1.ApiOperation)({ summary: 'Rota de login' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Rota para pedir email de reset da senha' }),
     (0, swagger_1.ApiCreatedResponse)({
         status: 201,
-        type: login_user_dto_1.LoginUserDto,
-        description: 'Usuario logado criado com sucesso',
+        description: 'Senha atualziada com sucesso',
     }),
     (0, swagger_1.ApiBadRequestResponse)({
         status: 400,
         description: 'O corpo da requisição esta errado, confira',
+    }),
+    (0, swagger_1.ApiNotFoundResponse)({
+        status: 404,
+        description: 'Email não cadastrado'
     }),
     (0, swagger_1.ApiInternalServerErrorResponse)({
         status: 500,
@@ -49,13 +52,13 @@ __decorate([
     (0, common_1.Post)(''),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [login_user_dto_1.LoginUserDto]),
+    __metadata("design:paramtypes", [request_reset_email_dto_1.RequestResetEmailDto]),
     __metadata("design:returntype", Promise)
-], LoginUserController.prototype, "login", null);
-LoginUserController = __decorate([
-    (0, common_1.Controller)('login'),
-    (0, swagger_1.ApiTags)('Autenticação'),
-    __metadata("design:paramtypes", [login_user_usecase_1.LoginUserUseCase])
-], LoginUserController);
-exports.LoginUserController = LoginUserController;
-//# sourceMappingURL=login-user.controller.js.map
+], RequestResetEmailController.prototype, "requestResetEmail", null);
+RequestResetEmailController = __decorate([
+    (0, common_1.Controller)('reset-password'),
+    (0, swagger_1.ApiTags)('Reset Password'),
+    __metadata("design:paramtypes", [request_reset_email_usecase_1.RequestResetEmailUseCase])
+], RequestResetEmailController);
+exports.RequestResetEmailController = RequestResetEmailController;
+//# sourceMappingURL=request-reset-email.controller.js.map

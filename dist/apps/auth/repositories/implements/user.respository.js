@@ -40,6 +40,10 @@ let UserRepository = class UserRepository {
         });
         return result_1.Result.ok(user);
     }
+    async findById(id) {
+        const user = await this.userModel.findById(id);
+        return result_1.Result.ok(user);
+    }
 };
 UserRepository = __decorate([
     (0, common_1.Injectable)(),

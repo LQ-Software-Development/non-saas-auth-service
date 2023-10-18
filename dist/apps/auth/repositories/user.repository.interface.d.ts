@@ -4,6 +4,7 @@ export interface UserRepositoryInterface {
     findByEmail: (email: string) => Promise<User>;
     findByDocument: (document: string) => Promise<User>;
     update: (data: User, id: string) => Promise<Result<User>>;
+    findById: (id: string) => Promise<Result<User>>;
 }
 export interface User {
     name: string;

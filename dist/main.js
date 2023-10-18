@@ -10,6 +10,7 @@ async function bootstrap() {
         .setDescription('Microserviço de Autenticação usando: Nestjs, Swagger, MongoDB, Mongoose e DDD')
         .setVersion('1.0')
         .build();
+    app.enableCors();
     const document = swagger_1.SwaggerModule.createDocument(app, swaggerConfig);
     swagger_1.SwaggerModule.setup('docs', app, document);
     await app.listen(process.env.AUTH_PORT);
