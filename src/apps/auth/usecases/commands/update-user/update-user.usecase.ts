@@ -1,6 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { User } from 'src/apps/auth/database/providers/schema/user.schema';
-import { UserRepositoryInterface } from 'src/apps/auth/repositories/user.repository.interface';
+import {
+  User,
+  UserRepositoryInterface,
+} from 'src/apps/auth/repositories/user.repository.interface';
 import { Result } from 'src/core/application/result';
 import { ForbiddenException } from 'src/core/exceptions';
 import { UpdateUserDto } from './update-user.dto';
@@ -13,15 +15,14 @@ export class UpdateUserUseCase {
   ) {}
 
   async update(id: string, data: UpdateUserDto): Promise<Result<User>> {
-    let user = (await this.userRepository.findById(id)).value;
+    const user = (await this.userRepository.findById(id)).value;
     if (!user) {
       return Result.fail(new ForbiddenException('User not found'));
     }
-    user = {
-      ...user,
-      ...data,
-    };
-    const updatedUserOrError = await this.userRepository.update(user, id);
+    user.email = data.email;
+    user.name = data.name;
+    user.updatedAt = new Date();
+    const updatedUserOrError = await this.userRepository.update(id, user);
     if (updatedUserOrError.isFailure) {
       return Result.fail(updatedUserOrError.error);
     }
