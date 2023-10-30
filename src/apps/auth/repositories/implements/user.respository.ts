@@ -1,9 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { User, UserRepositoryInterface } from '../user.repository.interface';
 import { Result } from 'src/core/application/result';
-import {
-  UserSchemaInterface,
-} from '../../database/providers/schema/user.schema';
+import { UserSchemaInterface } from '../../database/providers/schema/user.schema';
 import { Model } from 'mongoose';
 
 @Injectable()
