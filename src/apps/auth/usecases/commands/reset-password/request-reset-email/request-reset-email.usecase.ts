@@ -47,6 +47,6 @@ export class RequestResetEmailUseCase {
     
     this.emailProvider.sendMail(data);
   
-    return Result.ok<ResponseResetEmailDto>({ token: token });
+    return Result.ok<ResponseResetEmailDto>();
   }
 }
