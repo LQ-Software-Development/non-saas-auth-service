@@ -27,15 +27,17 @@ export class RequestResetPasswordUseCase {
 
       const newPasswordHash = bcrypt.hashSync(data.newPassword, 10);
       user.password = newPasswordHash;
+      user.updatedAt = new Date();
 
-      await this.userRepository.update(user, user.id);
+      await this.userRepository.update(user.id, user);
 
       return Result.ok({
         message: 'Password changed successfully',
       });
     } catch (error) {
-        console.error(error);
-        return Result.fail(new ForbiddenException('Token invalid or expired.')).error.message;
+      console.error(error);
+      return Result.fail(new ForbiddenException('Token invalid or expired.'))
+        .error.message;
     }
   }
 }
