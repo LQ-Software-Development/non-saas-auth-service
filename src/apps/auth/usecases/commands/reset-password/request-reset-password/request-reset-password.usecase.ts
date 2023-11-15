@@ -1,6 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UserRepositoryInterface } from 'src/apps/auth/repositories/user.repository.interface';
+import {
+  User,
+  UserRepositoryInterface,
+} from 'src/apps/auth/repositories/user.repository.interface';
 import { Result } from 'src/core/application/result';
 import { ForbiddenException, NotFoundException } from 'src/core/exceptions';
 import { RequestResetPasswordDto } from './request-reset-password.dto';
@@ -15,7 +18,10 @@ export class RequestResetPasswordUseCase {
     private readonly jwtService: JwtService,
   ) {}
 
-  async resetPassword(data: RequestResetPasswordDto, token: string) {
+  async resetPassword(
+    data: RequestResetPasswordDto,
+    token: string,
+  ): Promise<Result<any>> {
     try {
       await this.jwtService.verify(token).exp;
       const userId = await this.jwtService.decode(token).sub;
@@ -31,13 +37,12 @@ export class RequestResetPasswordUseCase {
 
       await this.userRepository.update(user.id, user);
 
-      return Result.ok({
+      return Result.ok<any>({
         message: 'Password changed successfully',
       });
     } catch (error) {
       console.error(error);
-      return Result.fail(new ForbiddenException('Token invalid or expired.'))
-        .error.message;
+      throw new ForbiddenException('Token invalid or expired.');
     }
   }
 }
