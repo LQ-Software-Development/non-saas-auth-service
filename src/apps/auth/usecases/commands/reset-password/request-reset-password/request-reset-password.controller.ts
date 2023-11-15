@@ -1,5 +1,13 @@
 import { Body, Controller, Param, Put } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import {
+  ApiBadRequestResponse,
+  ApiCreatedResponse,
+  ApiInternalServerErrorResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 import { ControllerBase } from 'src/core/application/controller.base';
 import { RequestResetPasswordUseCase } from './request-reset-password.usecase';
 import { RequestResetPasswordDto } from './request-reset-password.dto';
@@ -13,11 +21,31 @@ export class RequestResetPasswordController extends ControllerBase {
     super();
   }
 
+  @ApiOperation({ summary: 'Rota de Atualizar a senha.' })
+  @ApiOkResponse({
+    status: 200,
+    description: 'Senha atualziada com sucesso',
+  })
+  @ApiBadRequestResponse({
+    status: 400,
+    description: 'O corpo da requisição esta errado, confira',
+  })
+  @ApiInternalServerErrorResponse({
+    status: 500,
+    description: 'Erro o token dever estar expirado ou invalido',
+  })
   @Put('/:token')
   async resetPassword(
     @Param('token') token: string,
     @Body() data: RequestResetPasswordDto,
   ) {
-    return await this.requestResetPasswordUseCase.resetPassword(data, token);
+    const result = await this.requestResetPasswordUseCase.resetPassword(
+      data,
+      token,
+    );
+    if (result.isFailure) {
+      return this.handleErrorResponse(result.error);
+    }
+    return result.value;
   }
 }

@@ -11,7 +11,7 @@ import { ControllerBase } from 'src/core/application/controller.base';
 import { UpdateUserUseCase } from './update-user.usecase';
 import { UpdateUserDto } from './update-user.dto';
 
-@Controller('update-user')
+@Controller('updated-user')
 @ApiTags('Update User')
 export class UpdateUserController extends ControllerBase {
   constructor(private readonly userUpdateUseCase: UpdateUserUseCase) {
