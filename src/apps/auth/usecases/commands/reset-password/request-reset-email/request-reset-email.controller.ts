@@ -1,5 +1,5 @@
 import { Body, Controller, Post } from "@nestjs/common";
-import { ApiBadRequestResponse, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOperation, ApiTags } from "@nestjs/swagger";
+import { ApiBadRequestResponse, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { ControllerBase } from "src/core/application/controller.base";
 import { RequestResetEmailUseCase } from "./request-reset-email.usecase";
 import { RequestResetEmailDto } from "./request-reset-email.dto";
@@ -14,8 +14,8 @@ export class RequestResetEmailController extends ControllerBase{
   }
 
   @ApiOperation({ summary: 'Rota para pedir email de reset da senha' })
-  @ApiCreatedResponse({
-    status: 201,
+  @ApiOkResponse({
+    status: 200,
     description: 'Senha atualziada com sucesso',
   })
   @ApiBadRequestResponse({

@@ -1,3 +1,5 @@
+import { Result } from "src/core/application/result";
+
 export interface emailProviderInterface {
-  sendMail(data): Promise<void>;
+  sendMail(data): Promise<Result<any>>;
 }

@@ -18,9 +18,7 @@ export class RequestResetEmailUseCase {
     private readonly emailProvider: emailProviderInterface,
   ) {}
 
-  async requestResetEmail(
-    email: string,
-  ): Promise<Result<ResponseResetEmailDto>> {
+  async requestResetEmail(email: string): Promise<Result<any>> {
     const user = await this.userRepository.findByEmail(email);
 
     if (!user) {
@@ -44,9 +42,11 @@ export class RequestResetEmailUseCase {
       subject: 'Forgot Password Link',
       html: url,
     };
-    
-    this.emailProvider.sendMail(data);
-  
-    return Result.ok<ResponseResetEmailDto>();
+
+    await this.emailProvider.sendMail(data);
+
+    return Result.ok<any>({
+      message: 'Token send to email successfully',
+    });
   }
 }
