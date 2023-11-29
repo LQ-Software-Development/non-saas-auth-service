@@ -1,9 +1,9 @@
 import { Injectable, Inject } from '@nestjs/common';
-import { Result } from 'src/core/application/result';
-import { ForbiddenException } from 'src/core/exceptions';
+import { Result } from '../../../../../core/application/result';
+import { ForbiddenException } from '../../../../../core/exceptions';
 import { RegisterDto } from './register-user.dto';
-import { User } from 'src/apps/auth/database/providers/schema/user.schema';
-import { UserRepositoryInterface } from 'src/apps/auth/repositories/user.repository.interface';
+import { User } from '../../../../../apps/auth/database/providers/schema/user.schema';
+import { UserRepositoryInterface } from '../../../../../apps/auth/repositories/user.repository.interface';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()

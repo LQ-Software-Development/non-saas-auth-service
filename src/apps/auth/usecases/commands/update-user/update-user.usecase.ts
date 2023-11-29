@@ -2,9 +2,9 @@ import { Inject, Injectable } from '@nestjs/common';
 import {
   User,
   UserRepositoryInterface,
-} from 'src/apps/auth/repositories/user.repository.interface';
-import { Result } from 'src/core/application/result';
-import { ForbiddenException } from 'src/core/exceptions';
+} from '../../../../../apps/auth/repositories/user.repository.interface';
+import { Result } from '../../../../../core/application/result';
+import { ForbiddenException } from '../../../../../core/exceptions';
 import { UpdateUserDto } from './update-user.dto';
 
 @Injectable()

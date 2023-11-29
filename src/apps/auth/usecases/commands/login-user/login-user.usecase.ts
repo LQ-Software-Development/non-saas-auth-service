@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UserRepositoryInterface } from 'src/apps/auth/repositories/user.repository.interface';
+import { UserRepositoryInterface } from '../../../../../apps/auth/repositories/user.repository.interface';
 import { LoginUserDto } from './login-user.dto';
-import { Result } from 'src/core/application/result';
-import { ForbiddenException } from 'src/core/exceptions';
+import { Result } from '../../../../../core/application/result';
+import { ForbiddenException } from '../../../../../core/exceptions';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()

@@ -1,6 +1,6 @@
 import * as nodemailer from 'nodemailer';
 import { emailProviderInterface } from './email.provider.interface';
-import { Result } from 'src/core/application/result';
+import { Result } from '../../../../core/application/result';
 
 export class emailProvider implements emailProviderInterface {
   public async sendMail(data): Promise<Result<any>> {

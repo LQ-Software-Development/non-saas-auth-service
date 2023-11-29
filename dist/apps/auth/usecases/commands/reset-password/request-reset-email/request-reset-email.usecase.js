@@ -42,7 +42,7 @@ let RequestResetEmailUseCase = class RequestResetEmailUseCase {
             html: url,
         };
         this.emailProvider.sendMail(data);
-        return result_1.Result.ok({ token: token });
+        return result_1.Result.ok();
     }
 };
 RequestResetEmailUseCase = __decorate([
