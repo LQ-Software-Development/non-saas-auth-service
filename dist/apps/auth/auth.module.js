@@ -23,6 +23,8 @@ const request_reset_email_controller_1 = require("./usecases/commands/reset-pass
 const request_reset_email_usecase_1 = require("./usecases/commands/reset-password/request-reset-email/request-reset-email.usecase");
 const request_reset_password_controller_1 = require("./usecases/commands/reset-password/request-reset-password/request-reset-password.controller");
 const request_reset_password_usecase_1 = require("./usecases/commands/reset-password/request-reset-password/request-reset-password.usecase");
+const update_user_controller_1 = require("./usecases/commands/update-user/update-user.controller");
+const update_user_usecase_1 = require("./usecases/commands/update-user/update-user.usecase");
 let AuthModule = class AuthModule {
 };
 AuthModule = __decorate([
@@ -33,6 +35,7 @@ AuthModule = __decorate([
             change_user_password_controller_1.ChangeUserPassowrdController,
             request_reset_email_controller_1.RequestResetEmailController,
             request_reset_password_controller_1.RequestResetPasswordController,
+            update_user_controller_1.UpdateUserController,
         ],
         providers: [
             login_user_usecase_1.LoginUserUseCase,
@@ -40,6 +43,7 @@ AuthModule = __decorate([
             change_user_password_usecase_1.ChangeUserPassowrdUseCase,
             request_reset_email_usecase_1.RequestResetEmailUseCase,
             request_reset_password_usecase_1.RequestResetPasswordUseCase,
+            update_user_usecase_1.UpdateUserUseCase,
             {
                 provide: 'user-repository',
                 useClass: user_respository_1.UserRepository,

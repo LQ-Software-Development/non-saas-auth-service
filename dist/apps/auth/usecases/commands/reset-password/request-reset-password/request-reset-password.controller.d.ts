@@ -1,4 +1,4 @@
-import { ControllerBase } from 'src/core/application/controller.base';
+import { ControllerBase } from '../../../../../../core/application/controller.base';
 import { RequestResetPasswordUseCase } from './request-reset-password.usecase';
 import { RequestResetPasswordDto } from './request-reset-password.dto';
 export declare class RequestResetPasswordController extends ControllerBase {

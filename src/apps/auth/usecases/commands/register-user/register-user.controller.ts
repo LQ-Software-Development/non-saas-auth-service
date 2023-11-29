@@ -1,4 +1,4 @@
-import { ControllerBase } from 'src/core/application/controller.base';
+import { ControllerBase } from '../../../../../core/application/controller.base';
 import { RegisterUserUseCase } from './register-user.usecase';
 import { Body, Controller, Post } from '@nestjs/common';
 import {

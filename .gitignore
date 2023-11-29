@@ -1,5 +1,4 @@
 # compiled output
-/dist
 /node_modules
 
 # Logs
@@ -36,3 +35,4 @@ lerna-debug.log*
 
 #Secrets
 .env
+.vercel
