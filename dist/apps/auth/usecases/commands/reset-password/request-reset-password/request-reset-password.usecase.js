@@ -41,8 +41,7 @@ let RequestResetPasswordUseCase = class RequestResetPasswordUseCase {
         }
         catch (error) {
             console.error(error);
-            return result_1.Result.fail(new exceptions_1.ForbiddenException('Token invalid or expired.'))
-                .error.message;
+            throw new exceptions_1.ForbiddenException('Token invalid or expired.');
         }
     }
 };

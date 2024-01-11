@@ -6,5 +6,5 @@ export declare class RequestResetPasswordUseCase {
     private readonly userRepository;
     private readonly jwtService;
     constructor(userRepository: UserRepositoryInterface, jwtService: JwtService);
-    resetPassword(data: RequestResetPasswordDto, token: string): Promise<string | Result<unknown>>;
+    resetPassword(data: RequestResetPasswordDto, token: string): Promise<Result<any>>;
 }

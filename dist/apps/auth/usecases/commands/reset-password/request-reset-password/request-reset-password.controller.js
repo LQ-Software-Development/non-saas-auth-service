@@ -24,10 +24,27 @@ let RequestResetPasswordController = class RequestResetPasswordController extend
         this.requestResetPasswordUseCase = requestResetPasswordUseCase;
     }
     async resetPassword(token, data) {
-        return await this.requestResetPasswordUseCase.resetPassword(data, token);
+        const result = await this.requestResetPasswordUseCase.resetPassword(data, token);
+        if (result.isFailure) {
+            return this.handleErrorResponse(result.error);
+        }
+        return result.value;
     }
 };
 __decorate([
+    (0, swagger_1.ApiOperation)({ summary: 'Rota de Atualizar a senha.' }),
+    (0, swagger_1.ApiOkResponse)({
+        status: 200,
+        description: 'Senha atualziada com sucesso',
+    }),
+    (0, swagger_1.ApiBadRequestResponse)({
+        status: 400,
+        description: 'O corpo da requisição esta errado, confira',
+    }),
+    (0, swagger_1.ApiInternalServerErrorResponse)({
+        status: 500,
+        description: 'Erro o token dever estar expirado ou invalido',
+    }),
     (0, common_1.Put)('/:token'),
     __param(0, (0, common_1.Param)('token')),
     __param(1, (0, common_1.Body)()),

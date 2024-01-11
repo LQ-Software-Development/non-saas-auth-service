@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.emailProvider = void 0;
 const nodemailer = require("nodemailer");
+const result_1 = require("../../../../core/application/result");
 class emailProvider {
     async sendMail(data) {
         const transport = nodemailer.createTransport({
@@ -22,11 +23,14 @@ class emailProvider {
         };
         await transport.sendMail(info, (err, info) => {
             if (err) {
-                console.log(err);
+                return err;
             }
             else {
-                console.log('Email sent successfully!');
+                return info;
             }
+        });
+        return result_1.Result.ok({
+            message: 'Email sent successfully',
         });
     }
 }

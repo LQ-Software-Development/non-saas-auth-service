@@ -57,7 +57,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UpdateUserController.prototype, "update", null);
 UpdateUserController = __decorate([
-    (0, common_1.Controller)('update-user'),
+    (0, common_1.Controller)('updated-user'),
     (0, swagger_1.ApiTags)('Update User'),
     __metadata("design:paramtypes", [update_user_usecase_1.UpdateUserUseCase])
 ], UpdateUserController);

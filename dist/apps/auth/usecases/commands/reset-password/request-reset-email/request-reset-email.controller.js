@@ -33,8 +33,8 @@ let RequestResetEmailController = class RequestResetEmailController extends cont
 };
 __decorate([
     (0, swagger_1.ApiOperation)({ summary: 'Rota para pedir email de reset da senha' }),
-    (0, swagger_1.ApiCreatedResponse)({
-        status: 201,
+    (0, swagger_1.ApiOkResponse)({
+        status: 200,
         description: 'Senha atualziada com sucesso',
     }),
     (0, swagger_1.ApiBadRequestResponse)({
