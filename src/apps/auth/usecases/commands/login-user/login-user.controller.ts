@@ -6,7 +6,7 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
-import { ControllerBase } from 'src/core/application/controller.base';
+import { ControllerBase } from '../../../../../core/application/controller.base';
 import { LoginUserUseCase } from './login-user.usecase';
 import { LoginUserDto } from './login-user.dto';
 
