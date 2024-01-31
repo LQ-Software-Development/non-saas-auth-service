@@ -16,6 +16,10 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('docs', app, document);
-  await app.listen(process.env.AUTH_PORT);
+  await app.listen(process.env.AUTH_PORT, () => {
+    console.log(
+      `Servidor de Autenticação rodando na porta http://localhost:${process.env.AUTH_PORT}/docs`,
+    );
+  });
 }
 bootstrap();
