@@ -15,6 +15,7 @@ async function bootstrap() {
   app.enableCors();
 
   const document = SwaggerModule.createDocument(app, swaggerConfig);
+
   SwaggerModule.setup('docs', app, document, {
     customJs: [
       'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui-bundle.min.js',
@@ -28,5 +29,6 @@ async function bootstrap() {
   });
 
   await app.listen(process.env.AUTH_PORT);
+
 }
 bootstrap();

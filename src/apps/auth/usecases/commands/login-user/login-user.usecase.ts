@@ -17,20 +17,34 @@ export class LoginUserUseCase {
   async login(
     data: LoginUserDto,
   ): Promise<Result<{ token: string; userId: string }>> {
-    const { document, password } = data;
+    const { document, password, email } = data;
 
-    const user = await this.userRepository.findByDocument(document);
+    if (email) {
+      const userByEmail = await this.userRepository.findByEmail(email);
+      if (!userByEmail) {
+        return Result.fail(new ForbiddenException('User email incorrect'));
+      }
+      if (!bcrypt.compareSync(password, userByEmail.password)) {
+        return Result.fail(
+          new ForbiddenException('User or password incorrect'),
+        );
+      }
+      const token = this.jwtService.sign({ sub: userByEmail.id });
 
-    if (!user) {
-      return Result.fail(new ForbiddenException('User or password incorrect'));
+      return Result.ok({ token, userId: userByEmail.id });
+    } else {
+      const user = await this.userRepository.findByDocument(document);
+      if (!user) {
+        return Result.fail(new ForbiddenException('User document incorrect'));
+      }
+      if (!bcrypt.compareSync(password, user.password)) {
+        return Result.fail(
+          new ForbiddenException('User or password incorrect'),
+        );
+      }
+      const token = this.jwtService.sign({ sub: user.id });
+
+      return Result.ok({ token, userId: user.id });
     }
-
-    if (!bcrypt.compareSync(password, user.password)) {
-      return Result.fail(new ForbiddenException('User or password incorrect'));
-    }
-
-    const token = this.jwtService.sign({ sub: user.id });
-
-    return Result.ok({ token, userId: user.id });
   }
 }
