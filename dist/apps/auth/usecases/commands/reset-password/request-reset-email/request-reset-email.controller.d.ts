@@ -4,5 +4,5 @@ import { RequestResetEmailDto } from "./request-reset-email.dto";
 export declare class RequestResetEmailController extends ControllerBase {
     private readonly requestResetEmailUseCase;
     constructor(requestResetEmailUseCase: RequestResetEmailUseCase);
-    requestResetEmail(data: RequestResetEmailDto): Promise<void | import("./request-reset-email.dto").ResponseResetEmailDto>;
+    requestResetEmail(data: RequestResetEmailDto): Promise<any>;
 }

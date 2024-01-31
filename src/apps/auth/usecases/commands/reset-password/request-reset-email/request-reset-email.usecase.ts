@@ -1,11 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UserRepositoryInterface } from 'src/apps/auth/repositories/user.repository.interface';
-import { Result } from 'src/core/application/result';
-import { NotFoundException } from 'src/core/exceptions';
+import { UserRepositoryInterface } from '../../../../../../apps/auth/repositories/user.repository.interface';
+import { Result } from '../../../../../../core/application/result';
+import { NotFoundException } from '../../../../../../core/exceptions';
 import { ResponseResetEmailDto } from './request-reset-email.dto';
-import { emailProvider } from 'src/apps/auth/providers/mailer/email.provider';
-import { emailProviderInterface } from 'src/apps/auth/providers/mailer/email.provider.interface';
+import { emailProvider } from '../../../../../../apps/auth/providers/mailer/email.provider';
+import { emailProviderInterface } from '../../../../../../apps/auth/providers/mailer/email.provider.interface';
 
 @Injectable()
 export class RequestResetEmailUseCase {

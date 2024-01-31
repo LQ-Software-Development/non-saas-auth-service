@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { User, UserRepositoryInterface } from '../user.repository.interface';
-import { Result } from 'src/core/application/result';
+import { Result } from '../../../../core/application/result';
 import {
   UserDocument,
   UserSchemaInterface,

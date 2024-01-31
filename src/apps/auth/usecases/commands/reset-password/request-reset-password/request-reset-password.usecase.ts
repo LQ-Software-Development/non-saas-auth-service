@@ -3,9 +3,9 @@ import { JwtService } from '@nestjs/jwt';
 import {
   User,
   UserRepositoryInterface,
-} from 'src/apps/auth/repositories/user.repository.interface';
-import { Result } from 'src/core/application/result';
-import { ForbiddenException, NotFoundException } from 'src/core/exceptions';
+} from '../../../../../../apps/auth/repositories/user.repository.interface';
+import { Result } from '../../../../../../core/application/result';
+import { ForbiddenException, NotFoundException } from '../../../../../../core/exceptions';
 import { RequestResetPasswordDto } from './request-reset-password.dto';
 import * as bcrypt from 'bcrypt';
 

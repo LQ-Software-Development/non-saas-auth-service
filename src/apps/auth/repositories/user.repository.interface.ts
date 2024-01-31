@@ -1,4 +1,4 @@
-import { Result } from 'src/core/application/result';
+import { Result } from '../../../core/application/result';
 
 export interface UserRepositoryInterface {
   create: (data: User) => Promise<Result<User>>;

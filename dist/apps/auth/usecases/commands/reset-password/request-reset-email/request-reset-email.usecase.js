@@ -41,8 +41,10 @@ let RequestResetEmailUseCase = class RequestResetEmailUseCase {
             subject: 'Forgot Password Link',
             html: url,
         };
-        this.emailProvider.sendMail(data);
-        return result_1.Result.ok({ token: token });
+        await this.emailProvider.sendMail(data);
+        return result_1.Result.ok({
+            message: 'Token send to email successfully',
+        });
     }
 };
 RequestResetEmailUseCase = __decorate([
