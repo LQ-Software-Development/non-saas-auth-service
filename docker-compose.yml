@@ -1,0 +1,27 @@
+version: "3.9"
+services: 
+  api:
+    build: .
+    command: sh -c 'npm run start:dev'
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    environment:
+      - AUTH_DB_URL=mongodb://mongo:27017/auth_db
+      - AUTH_PORT=3000
+    env_file: 
+      - .env
+    ports: 
+      - "3000:3000"
+    depends_on:
+      - mongo
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    env_file: 
+      - .env
+    volumes:
+      - mongodb_data:/data/db
+volumes:
+  mongodb_data:
