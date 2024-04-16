@@ -1,17 +1,14 @@
 # Use NodeJS base image
-FROM node:lts
+FROM node:20.12
 
 # Create app directory
 WORKDIR /usr/src/app
-
-RUN npm install yarn
 # Install app dependencies by copying
 # package.json and package-lock.json
-COPY package.json ./
-COPY yarn.lock ./
+COPY package*.json ./
 
 # Install all dependencies
-RUN yarn install
+RUN npm ci or npm install
 
 # Copy app source
 COPY . .
@@ -20,4 +17,4 @@ COPY . .
 EXPOSE 3000
 
 # Command to run the app
-CMD [ "yarn", "start:dev" ]
+CMD [ "npm", "run", "start:prod" ]
