@@ -14,10 +14,12 @@ export class RegisterUserUseCase {
   ) {}
 
   async register(data: RegisterDto): Promise<Result<User>> {
-    const userExists = await this.userRepository.findByDocument(data.document);
+    if (data.document) {
+      const userExists = await this.userRepository.findByDocument(data.document);
 
-    if (userExists) {
-      return Result.fail(new ForbiddenException('User existent'));
+      if (userExists) {
+        return Result.fail(new ForbiddenException('User existent'));
+      }
     }
 
     const passwordHash = bcrypt.hashSync(data.password, 10);
