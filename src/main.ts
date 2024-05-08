@@ -31,7 +31,7 @@ async function bootstrap() {
     ],
   });
 
-  await app.listen(process.env.AUTH_PORT);
+  await app.listen(process.env.AUTH_PORT || 3000);
 }
 
 bootstrap();
