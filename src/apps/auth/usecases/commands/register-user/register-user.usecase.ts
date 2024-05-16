@@ -15,9 +15,17 @@ export class RegisterUserUseCase {
 
   async register(data: RegisterDto): Promise<Result<User>> {
     if (data.document) {
-      const userExists = await this.userRepository.findByDocument(data.document);
+      const userDocumentExists = await this.userRepository.findByDocument(data.document);
 
-      if (userExists) {
+      if (userDocumentExists) {
+        return Result.fail(new ForbiddenException('User existent'));
+      }
+    }
+
+    if (data.email) {
+      const userEmailExists = await this.userRepository.findByEmail(data.email);
+
+      if (userEmailExists) {
         return Result.fail(new ForbiddenException('User existent'));
       }
     }
