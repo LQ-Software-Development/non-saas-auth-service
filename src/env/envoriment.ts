@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-namespace */
 export {};
 
 // Here we declare the members of the process.env object, so that we
@@ -7,6 +8,7 @@ declare global {
     interface ProcessEnv {
       MONGO_URL: string;
       AUTH_URL: number;
+      EMAIL_VERIFICATION_SENDER_URL: string;
       NODEMAILER_HOST: string;
       NODEMAILER_PORT: number;
       NODEMAILER_USER: string;
