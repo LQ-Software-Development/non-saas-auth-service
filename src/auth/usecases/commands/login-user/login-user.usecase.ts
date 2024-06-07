@@ -5,6 +5,7 @@ import { LoginUserDto } from './login-user.dto';
 import { Result } from '../../../../core/application/result';
 import { ForbiddenException } from '../../../../core/exceptions';
 import * as bcrypt from 'bcrypt';
+import { User } from 'src/auth/database/providers/schema/user.schema';
 
 @Injectable()
 export class LoginUserUseCase {
@@ -20,7 +21,10 @@ export class LoginUserUseCase {
     const { document, password, email } = data;
 
     if (email) {
-      const userByEmail = await this.userRepository.findByEmail(email);
+      const userByEmail = (await this.userRepository.findByEmail(
+        email,
+      )) as User & { id: string };
+
       if (!userByEmail) {
         return Result.fail(new ForbiddenException('User email incorrect'));
       }
@@ -29,22 +33,36 @@ export class LoginUserUseCase {
           new ForbiddenException('User or password incorrect'),
         );
       }
+
       const token = this.jwtService.sign({ sub: userByEmail.id });
 
-      return Result.ok({ token, userId: userByEmail.id });
+      return Result.ok({
+        token,
+        userId: userByEmail.id,
+        verifiedEmail: userByEmail.verifiedEmail,
+      });
     } else {
-      const user = await this.userRepository.findByDocument(document);
+      const user = (await this.userRepository.findByDocument(
+        document,
+      )) as User & { id: string };
+
       if (!user) {
         return Result.fail(new ForbiddenException('User document incorrect'));
       }
+
       if (!bcrypt.compareSync(password, user.password)) {
         return Result.fail(
           new ForbiddenException('User or password incorrect'),
         );
       }
+
       const token = this.jwtService.sign({ sub: user.id });
 
-      return Result.ok({ token, userId: user.id });
+      return Result.ok({
+        token,
+        userId: user.id,
+        verifiedEmail: user.verifiedEmail,
+      });
     }
   }
 }

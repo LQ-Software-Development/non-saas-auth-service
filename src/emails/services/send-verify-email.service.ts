@@ -13,7 +13,7 @@ export class SendVerifyEmailService {
           name: user.name,
           verificationCode: user.emailToken,
         },
-        email: 'string',
+        email: user.email,
       },
     );
   }

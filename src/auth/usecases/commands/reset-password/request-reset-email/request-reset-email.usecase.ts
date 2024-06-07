@@ -6,6 +6,7 @@ import { NotFoundException } from '../../../../../core/exceptions';
 import { ResponseResetEmailDto } from './request-reset-email.dto';
 import { emailProvider } from '../../../../providers/mailer/email.provider';
 import { emailProviderInterface } from '../../../../providers/mailer/email.provider.interface';
+import { User } from 'src/auth/database/providers/schema/user.schema';
 
 @Injectable()
 export class RequestResetEmailUseCase {
@@ -19,7 +20,9 @@ export class RequestResetEmailUseCase {
   ) {}
 
   async requestResetEmail(email: string): Promise<Result<any>> {
-    const user = await this.userRepository.findByEmail(email);
+    const user = (await this.userRepository.findByEmail(email)) as User & {
+      id: string;
+    };
 
     if (!user) {
       return Result.fail(new NotFoundException('User not found'));

@@ -11,6 +11,8 @@ export class EmailsController {
 
   @OnEvent('users.created')
   handleUserCreatedEvent(payload: User) {
+    if (!payload.emailToken || !payload.email) return;
+
     this.sendVerifyEmailService.sendVerifyEmail(payload);
   }
 }

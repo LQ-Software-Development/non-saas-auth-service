@@ -4,6 +4,7 @@ import { UserRepositoryInterface } from '../../../repositories/user.repository.i
 import { Result } from '../../../../core/application/result';
 import { ForbiddenException } from '../../../../core/exceptions';
 import * as bcrypt from 'bcrypt';
+import { User } from 'src/auth/database/providers/schema/user.schema';
 
 @Injectable()
 export class ChangeUserPassowrdUseCase {
@@ -13,7 +14,9 @@ export class ChangeUserPassowrdUseCase {
   ) {}
 
   async changePassword(data: ChangePasswordDto): Promise<any> {
-    const user = await this.userRepository.findByEmail(data.email);
+    const user = (await this.userRepository.findByEmail(data.email)) as User & {
+      id: string;
+    };
 
     if (!user) {
       return Result.fail(new ForbiddenException('User existent'));

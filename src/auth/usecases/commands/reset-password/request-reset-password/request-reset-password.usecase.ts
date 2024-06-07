@@ -1,11 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import {
-  User,
-  UserRepositoryInterface,
-} from '../../../../repositories/user.repository.interface';
+import { UserRepositoryInterface } from '../../../../repositories/user.repository.interface';
 import { Result } from '../../../../../core/application/result';
-import { ForbiddenException, NotFoundException } from '../../../../../core/exceptions';
+import {
+  ForbiddenException,
+  NotFoundException,
+} from '../../../../../core/exceptions';
 import { RequestResetPasswordDto } from './request-reset-password.dto';
 import * as bcrypt from 'bcrypt';
 
@@ -35,7 +35,7 @@ export class RequestResetPasswordUseCase {
       user.password = newPasswordHash;
       user.updatedAt = new Date();
 
-      await this.userRepository.update(user.id, user);
+      await this.userRepository.update(userId, user);
 
       return Result.ok<any>({
         message: 'Password changed successfully',

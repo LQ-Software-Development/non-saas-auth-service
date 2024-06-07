@@ -1,11 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
-import {
-  User,
-  UserRepositoryInterface,
-} from '../../../repositories/user.repository.interface';
+import { UserRepositoryInterface } from '../../../repositories/user.repository.interface';
 import { Result } from '../../../../core/application/result';
 import { ForbiddenException } from '../../../../core/exceptions';
 import { UpdateUserDto } from './update-user.dto';
+import { User } from 'src/auth/database/providers/schema/user.schema';
 
 @Injectable()
 export class UpdateUserUseCase {
