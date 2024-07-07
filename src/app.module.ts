@@ -4,14 +4,26 @@ import { AuthModule } from './auth/auth.module';
 import { DatabaseModule } from './auth/database/database.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { EmailsModule } from './emails/emails.module';
+import { OrganizationsModule } from './organizations/organizations.module';
+import { MongooseModule } from '@nestjs/mongoose';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
+    MongooseModule.forRoot(process.env.AUTH_DB_URL, {
+      dbName: process.env.DB_COLLECTION_NAME,
+    }),
+    JwtModule.register({
+      global: true,
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: '1d' },
+    }),
     EventEmitterModule.forRoot(),
     DatabaseModule,
     AuthModule,
     EmailsModule,
+    OrganizationsModule,
   ],
 })
 export class AppModule {}

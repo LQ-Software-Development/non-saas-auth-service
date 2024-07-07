@@ -11,6 +11,12 @@ export class LoginUserDto {
     example: '12345678900',
   })
   document: string;
+
+  @ApiProperty({
+    example: 'master',
+  })
+  role: string;
+
   @ApiProperty({
     description: 'Senha do Usuário',
     example: '123456',

@@ -12,6 +12,7 @@ async function bootstrap() {
     .setDescription(
       'Microserviço de Autenticação usando: Nestjs, Swagger, MongoDB, Mongoose e DDD',
     )
+    .addBearerAuth()
     .setVersion('1.0')
     .build();
 
@@ -34,4 +35,10 @@ async function bootstrap() {
   await app.listen(process.env.AUTH_PORT || 3000);
 }
 
-bootstrap();
+bootstrap().then(() => {
+  console.log(
+    `Api is running, see the documentation at http://localhost:${
+      process.env.AUTH_PORT || 3000
+    }/docs`,
+  );
+});
