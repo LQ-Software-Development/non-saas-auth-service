@@ -2,7 +2,11 @@ import { Module } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { databaseProviders } from './database/providers/database.provider';
 import { emailProvider } from './providers/mailer/email.provider';
-import { userSchemaProviders } from './database/providers/schema/user.schema';
+import {
+  User,
+  UserSchema,
+  userSchemaProviders,
+} from './database/providers/schema/user.schema';
 import { UserRepository } from './repositories/implements/user.respository';
 import { ChangeUserPassowrdController } from './usecases/commands/change-user-password/change-user-password.controller';
 import { ChangeUserPassowrdUseCase } from './usecases/commands/change-user-password/change-user-password.usecase';
@@ -18,8 +22,33 @@ import { UpdateUserController } from './usecases/commands/update-user/update-use
 import { UpdateUserUseCase } from './usecases/commands/update-user/update-user.usecase';
 import { VerifyUserEmailController } from './usecases/commands/verify-user-email/verify-user-email.controller';
 import { VerifyUserEmailUseCase } from './usecases/commands/verify-user-email/verify-user-email.usecase';
+import { MongooseModule } from '@nestjs/mongoose';
+import {
+  Participant,
+  ParticipantSchema,
+} from 'src/organizations/participants/entities/participant.entity';
+import {
+  Organization,
+  OrganizationSchema,
+} from 'src/organizations/entities/organization.schema';
 
 @Module({
+  imports: [
+    MongooseModule.forFeature([
+      {
+        name: User.name,
+        schema: UserSchema,
+      },
+      {
+        name: Participant.name,
+        schema: ParticipantSchema,
+      },
+      {
+        name: Organization.name,
+        schema: OrganizationSchema,
+      },
+    ]),
+  ],
   controllers: [
     LoginUserController,
     RegisterUserController,
