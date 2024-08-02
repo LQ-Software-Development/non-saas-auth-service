@@ -37,7 +37,9 @@ export class LoginUserUseCase {
         document,
       });
     } else if (email) {
-      user = await this.userModel.findOne({});
+      user = await this.userModel.findOne({
+        email,
+      });
     } else {
       return Result.fail(new ForbiddenException('User or password incorrect'));
     }
