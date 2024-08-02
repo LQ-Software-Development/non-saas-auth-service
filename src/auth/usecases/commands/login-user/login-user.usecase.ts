@@ -31,7 +31,7 @@ export class LoginUserUseCase {
     const { document, email, password } = data;
 
     const user = await this.userModel.findOne({
-      $or: [{ document }, { email }],
+      $or: [email && { email }, document && { document }],
     });
 
     console.log(user);
