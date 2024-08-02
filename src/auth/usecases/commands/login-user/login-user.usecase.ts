@@ -34,6 +34,10 @@ export class LoginUserUseCase {
       $or: [{ document }, { email }],
     });
 
+    if (!user) {
+      return Result.fail(new ForbiddenException('User or password incorrect'));
+    }
+
     const organizationRelations = await this.participantModel.find({
       $or: [
         user.email && { email: user.email },
