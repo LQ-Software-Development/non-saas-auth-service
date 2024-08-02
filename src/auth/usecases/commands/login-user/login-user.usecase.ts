@@ -35,7 +35,11 @@ export class LoginUserUseCase {
     });
 
     const organizationRelations = await this.participantModel.find({
-      $or: [{ email: user.email }, { document: user.document }],
+      $or: [
+        user.email && { email: user.email },
+        user.document && { document: user.document },
+        user.id && { userId: user.id },
+      ],
     });
 
     const organizationIds = organizationRelations.map(
