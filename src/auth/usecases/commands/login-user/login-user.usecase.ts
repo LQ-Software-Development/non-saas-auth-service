@@ -29,6 +29,7 @@ export class LoginUserUseCase {
     data: LoginUserDto,
   ): Promise<Result<{ token: string; userId: string }>> {
     const { document, email, password } = data;
+    const whereClauseOrganizationRelations = [];
 
     let user;
 
@@ -36,10 +37,12 @@ export class LoginUserUseCase {
       user = await this.userModel.findOne({
         document,
       });
+      whereClauseOrganizationRelations.push({ document });
     } else if (email) {
       user = await this.userModel.findOne({
         email,
       });
+      whereClauseOrganizationRelations.push({ email });
     } else {
       return Result.fail(new ForbiddenException('User or password incorrect'));
     }
@@ -49,11 +52,7 @@ export class LoginUserUseCase {
     }
 
     const organizationRelations = await this.participantModel.find({
-      $or: [
-        user.email && { email: user.email },
-        user.document && { document: user.document },
-        user.id && { userId: user.id },
-      ],
+      $or: whereClauseOrganizationRelations,
     });
 
     const organizationIds = organizationRelations.map(
