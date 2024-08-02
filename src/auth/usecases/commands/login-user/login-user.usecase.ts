@@ -30,11 +30,17 @@ export class LoginUserUseCase {
   ): Promise<Result<{ token: string; userId: string }>> {
     const { document, email, password } = data;
 
-    const user = await this.userModel.findOne({
-      $or: [email ? { email } : {}, document ? { document } : {}],
-    });
+    let user;
 
-    console.log(user);
+    if (document) {
+      user = await this.userModel.findOne({
+        document,
+      });
+    } else if (email) {
+      user = await this.userModel.findOne({});
+    } else {
+      return Result.fail(new ForbiddenException('User or password incorrect'));
+    }
 
     if (!user) {
       return Result.fail(new ForbiddenException('User or password incorrect'));
