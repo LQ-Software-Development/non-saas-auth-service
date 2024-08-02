@@ -34,6 +34,8 @@ export class LoginUserUseCase {
       $or: [{ document }, { email }],
     });
 
+    console.log(user);
+
     if (!user) {
       return Result.fail(new ForbiddenException('User or password incorrect'));
     }
