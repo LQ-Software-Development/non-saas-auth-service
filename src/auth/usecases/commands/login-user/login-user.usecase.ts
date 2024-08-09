@@ -73,6 +73,7 @@ export class LoginUserUseCase {
       return {
         ...organization.toObject(),
         id: organization.id,
+        participantId: relation?.id,
         role: relation?.role || 'owner',
       };
     });
