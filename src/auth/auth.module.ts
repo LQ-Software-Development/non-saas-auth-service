@@ -75,7 +75,7 @@ import {
       useFactory: () => {
         return new JwtService({
           secret: process.env.JWT_SECRET,
-          signOptions: { expiresIn: '1d' },
+          signOptions: { expiresIn: '90d' },
         });
       },
     },
