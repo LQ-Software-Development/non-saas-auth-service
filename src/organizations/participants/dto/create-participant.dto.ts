@@ -26,4 +26,7 @@ export class CreateParticipantDto {
   email: string;
 
   organizationId: string;
+
+  @ApiProperty({ type: Object, default: {} })
+  metadata: Record<string, any>;
 }

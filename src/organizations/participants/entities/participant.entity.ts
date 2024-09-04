@@ -16,6 +16,9 @@ export class Participant {
 
   @Prop()
   organizationId: string;
+
+  @Prop({ type: Object, default: {} })
+  metadata: Record<string, any>;
 }
 
 export const ParticipantSchema = SchemaFactory.createForClass(Participant);
