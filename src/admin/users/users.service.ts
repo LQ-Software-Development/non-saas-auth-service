@@ -16,8 +16,11 @@ export class UsersService {
     return 'This action adds a new user';
   }
 
-  findAll() {
-    return this.userModel.find().exec();
+  findAll(props: { page: number; limit: number }) {
+    return this.userModel
+      .find()
+      .skip((props.page - 1) * props.limit)
+      .limit(props.limit);
   }
 
   findOne(id: number) {

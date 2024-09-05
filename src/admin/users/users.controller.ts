@@ -8,13 +8,14 @@ import {
   Delete,
   Headers,
   ForbiddenException,
+  Query,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiHeader } from '@nestjs/swagger';
 
-@Controller('users')
+@Controller('admin/users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
@@ -29,7 +30,10 @@ export class UsersController {
     description: 'Application Key for Admin Access',
   })
   @Get()
-  findAll(@Headers() headers: { 'application-key': string }) {
+  findAll(
+    @Headers() headers: { 'application-key': string },
+    @Query() query: { page: number; limit: number },
+  ) {
     if (
       !headers['application-key'] ||
       headers['application-key'] !== process.env.APPLICATION_KEY
@@ -37,7 +41,10 @@ export class UsersController {
       throw new ForbiddenException('Forbidden Resource');
     }
 
-    return this.usersService.findAll();
+    return this.usersService.findAll({
+      page: query.page || 1,
+      limit: query.limit || 10,
+    });
   }
 
   @Get(':id')
