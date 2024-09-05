@@ -16,11 +16,18 @@ export class UsersService {
     return 'This action adds a new user';
   }
 
-  findAll(props: { page: number; limit: number }) {
-    return this.userModel
+  async findAll(props: { page: number; limit: number }) {
+    const data = await  this.userModel
       .find()
       .skip((props.page - 1) * props.limit)
       .limit(props.limit);
+
+    const count = await this.userModel.countDocuments();
+
+    return {
+      data,
+      count,
+    };
   }
 
   findOne(id: number) {
