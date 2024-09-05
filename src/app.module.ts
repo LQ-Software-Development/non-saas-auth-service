@@ -7,6 +7,7 @@ import { EmailsModule } from './emails/emails.module';
 import { OrganizationsModule } from './organizations/organizations.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { JwtModule } from '@nestjs/jwt';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { JwtModule } from '@nestjs/jwt';
     AuthModule,
     EmailsModule,
     OrganizationsModule,
+    AdminModule,
   ],
 })
 export class AppModule {}
