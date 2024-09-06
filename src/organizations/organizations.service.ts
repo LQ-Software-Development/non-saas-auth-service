@@ -30,7 +30,7 @@ export class OrganizationsService {
     return this.organizationModel
       .find({
         ownerId: userId,
-        ...(showInactive ? {} : { active: true }),
+        ...(showInactive ? {} : { $or: [{ active: true }, { active: { $exists: false } }] }),
       })
       .exec();
   }
