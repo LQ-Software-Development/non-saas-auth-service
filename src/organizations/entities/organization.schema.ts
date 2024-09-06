@@ -14,6 +14,9 @@ export class Organization {
   @Prop(raw({}))
   metadata: Record<string, any>;
 
+  @Prop({ default: true })
+  active: boolean;
+
   @Prop()
   ownerId: string;
 

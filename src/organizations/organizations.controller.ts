@@ -12,7 +12,7 @@ import {
 import { OrganizationsService } from './organizations.service';
 import { CreateOrganizationDto } from './dto/create-organization.dto';
 import { UpdateOrganizationDto } from './dto/update-organization.dto';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 @ApiBearerAuth()
@@ -33,10 +33,17 @@ export class OrganizationsController {
     });
   }
 
+  @ApiQuery({
+    name: 'showInactive',
+    required: false,
+    type: Boolean,
+    description: 'Show inactive organizations',
+  })
   @Get()
   findAll(@Req() req: any) {
     return this.organizationsService.findAll({
       userId: req.user.sub,
+      showInactive: req.query.showInactive === 'true',
     });
   }
 

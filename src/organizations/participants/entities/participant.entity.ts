@@ -1,4 +1,4 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Prop, raw, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 @Schema()
 export class Participant {
@@ -16,6 +16,9 @@ export class Participant {
 
   @Prop()
   organizationId: string;
+
+  @Prop(raw({}))
+  metadata: Record<string, any>;
 }
 
 export const ParticipantSchema = SchemaFactory.createForClass(Participant);

@@ -41,6 +41,11 @@ export class ParticipantsService {
         ...user?.toObject(),
         pending: user ? false : true,
         ...relation.toObject(),
+        metadata: {
+          // This merge user and participant metadata
+          // ...user.metadata,
+          ...relation.metadata,
+        },
         role: relation.role,
       };
     });

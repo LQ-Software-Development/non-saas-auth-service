@@ -20,10 +20,17 @@ export class OrganizationsService {
     return createdOrganization.save();
   }
 
-  findAll({ userId }: { userId: string }) {
+  findAll({
+    userId,
+    showInactive,
+  }: {
+    userId: string;
+    showInactive?: boolean;
+  }) {
     return this.organizationModel
       .find({
         ownerId: userId,
+        ...(showInactive ? {} : { active: true }),
       })
       .exec();
   }

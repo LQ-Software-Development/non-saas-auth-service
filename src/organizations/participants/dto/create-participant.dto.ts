@@ -26,4 +26,10 @@ export class CreateParticipantDto {
   email: string;
 
   organizationId: string;
+
+  @ApiPropertyOptional({
+    description: 'Metadata of the participant',
+    example: { key: 'value' },
+  })
+  metadata: Record<string, any>;
 }
