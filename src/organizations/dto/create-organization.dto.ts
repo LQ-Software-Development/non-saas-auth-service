@@ -14,5 +14,8 @@ export class CreateOrganizationDto {
   })
   metadata: Record<string, any>;
 
+  @ApiPropertyOptional({ default: true })
+  active?: boolean;
+
   ownerId?: string;
 }
