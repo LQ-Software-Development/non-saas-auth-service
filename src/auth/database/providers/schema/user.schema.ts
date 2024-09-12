@@ -28,6 +28,9 @@ export class User {
 
   @Prop({ default: now() })
   updatedAt?: Date;
+
+  @Prop({ type: Object, default: {} })
+  metadata?: any;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
@@ -42,6 +45,7 @@ export interface UserSchemaInterface {
   emailToken: string; // token to verify email ex. 123456
   createdAt: Date;
   updatedAt: Date;
+  metadata: Record<string, any>;
 }
 
 export const userSchemaProviders = [

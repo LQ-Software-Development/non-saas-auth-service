@@ -6,15 +6,21 @@ import {
   Patch,
   Param,
   Delete,
-  Headers,
-  ForbiddenException,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiHeader } from '@nestjs/swagger';
+import { ApplicationKeyGuard } from 'src/auth/guards/application-key.guard';
 
+@ApiHeader({
+  name: 'application-key',
+  required: true,
+  description: 'Application Key for Admin Access',
+})
+@UseGuards(ApplicationKeyGuard)
 @Controller('admin/users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
@@ -24,23 +30,13 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
-  @ApiHeader({
-    name: 'application-key',
-    required: true,
-    description: 'Application Key for Admin Access',
-  })
-  @Get()
-  findAll(
-    @Headers() headers: { 'application-key': string },
-    @Query() query: { page: number; limit: number },
-  ) {
-    if (
-      !headers['application-key'] ||
-      headers['application-key'] !== process.env.APPLICATION_KEY
-    ) {
-      throw new ForbiddenException('Forbidden Resource');
-    }
+  @Post('export')
+  exportUsersToCSV() {
+    return this.usersService.exportUsersToCSV();
+  }
 
+  @Get()
+  findAll(@Query() query: { page: number; limit: number }) {
     return this.usersService.findAll({
       page: query.page || 1,
       limit: query.limit || 10,
@@ -48,13 +44,16 @@ export class UsersController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
+  findOne(
+    @Param('id')
+    id: string,
+  ) {
+    return this.usersService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
+    return this.usersService.update();
   }
 
   @Delete(':id')
