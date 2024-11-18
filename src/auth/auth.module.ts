@@ -31,6 +31,8 @@ import {
   Organization,
   OrganizationSchema,
 } from 'src/organizations/entities/organization.schema';
+import { AuthController } from './auth.controller';
+import { RefreshTokenInfoService } from './services/refresh-token-info.service';
 
 @Module({
   imports: [
@@ -57,6 +59,7 @@ import {
     RequestResetPasswordController,
     UpdateUserController,
     VerifyUserEmailController,
+    AuthController,
   ],
   providers: [
     LoginUserUseCase,
@@ -66,6 +69,7 @@ import {
     RequestResetPasswordUseCase,
     UpdateUserUseCase,
     VerifyUserEmailUseCase,
+    RefreshTokenInfoService,
     {
       provide: 'user-repository',
       useClass: UserRepository,
