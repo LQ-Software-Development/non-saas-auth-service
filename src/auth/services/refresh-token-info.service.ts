@@ -27,6 +27,13 @@ export class RefreshTokenInfoService {
       throw new ForbiddenException('User or password incorrect');
     }
 
+    if (user.email) {
+      whereClauseOrganizationRelations.push({ email: user.email });
+    }
+    if (user.document) {
+      whereClauseOrganizationRelations.push({ document: user.document });
+    }
+
     const organizationRelations = await this.participantModel.find({
       $or: whereClauseOrganizationRelations,
     });
