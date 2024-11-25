@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsOptional, IsPhoneNumber } from 'class-validator';
 
 export class RegisterDto {
   @ApiProperty({
@@ -21,4 +22,19 @@ export class RegisterDto {
     example: '123456',
   })
   password: string;
+
+  @ApiProperty({
+    description: 'Telefone do Usuário',
+    example: '62999999999',
+  })
+  @IsPhoneNumber('BR')
+  @IsOptional()
+  phone: string;
+
+  @ApiProperty({
+    description: 'Metadados do Usuário',
+    example: '{}',
+  })
+  @IsOptional()
+  metadata: any;
 }
