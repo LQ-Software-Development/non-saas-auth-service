@@ -31,6 +31,9 @@ export class User {
 
   @Prop({ type: Object, default: {} })
   metadata?: any;
+
+  @Prop({ required: false })
+  phone?: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
@@ -46,6 +49,7 @@ export interface UserSchemaInterface {
   createdAt: Date;
   updatedAt: Date;
   metadata: Record<string, any>;
+  phone?: string;
 }
 
 export const userSchemaProviders = [
