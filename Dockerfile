@@ -13,6 +13,8 @@ RUN npm install
 # Copy app source
 COPY . .
 
+RUN npx prisma db push
+
 RUN npm run build
 
 # Expose the listening port
