@@ -30,7 +30,7 @@ export class OrganizationService {
 
   async create(bodyData) {
     const organizationExists = await this.organizationModel.findOne({
-      name: bodyData.name,
+      name: { $eq: bodyData.name },
     });
 
     if (organizationExists) {
