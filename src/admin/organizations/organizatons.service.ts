@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
+import { ConflictException } from '../../core/exceptions';
+
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { Result } from 'src/core/application/result';
 
 import { Organization } from 'src/organizations/entities/organization.schema';
 
@@ -25,7 +28,15 @@ export class OrganizationService {
     };
   }
 
-  create(bodyData) {
+  async create(bodyData) {
+    const organizationExists = await this.organizationModel.findOne({
+      name: bodyData.name,
+    });
+
+    if (organizationExists) {
+      return Result.fail(new ConflictException('Organization already exists'));
+    }
+
     return this.organizationModel.create(bodyData);
   }
 
