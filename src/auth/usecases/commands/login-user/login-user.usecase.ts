@@ -29,7 +29,10 @@ export class LoginUserUseCase {
     data: LoginUserDto,
   ): Promise<Result<{ token: string; userId: string }>> {
     const { document, email, password } = data;
-    const whereClauseOrganizationRelations = [];
+    const whereClauseOrganizationRelations: Array<{
+      document?: string;
+      email?: string;
+    }> = [];
 
     let user;
 
@@ -51,9 +54,13 @@ export class LoginUserUseCase {
       return Result.fail(new ForbiddenException('User or password incorrect'));
     }
 
-    const organizationRelations = await this.participantModel.find({
-      $or: whereClauseOrganizationRelations,
-    });
+    const organizationRelations = await this.participantModel
+      .find({
+        $or: whereClauseOrganizationRelations,
+        deletedAt: { $exists: false },
+      })
+      .lean()
+      .exec();
 
     const organizationIds = organizationRelations.map(
       (relation) => relation.organizationId,
@@ -73,8 +80,9 @@ export class LoginUserUseCase {
       return {
         ...organization.toObject(),
         id: organization.id,
-        participantId: relation?.id,
+        participantId: relation?._id,
         role: relation?.role || 'owner',
+        accessMetadata: relation?.metadata,
       };
     });
 
