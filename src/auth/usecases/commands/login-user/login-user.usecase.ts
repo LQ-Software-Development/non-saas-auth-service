@@ -83,9 +83,9 @@ export class LoginUserUseCase {
         participantId: relation?._id,
         role: relation?.role || 'owner',
         accessMetadata: {
+          ...relation?.metadata,
           createdAt: relation?.createdAt,
           updatedAt: relation?.updatedAt,
-          ...relation?.metadata,
         },
       };
     });
