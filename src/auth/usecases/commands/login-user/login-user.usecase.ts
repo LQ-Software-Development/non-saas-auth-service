@@ -82,7 +82,11 @@ export class LoginUserUseCase {
         id: organization.id,
         participantId: relation?._id,
         role: relation?.role || 'owner',
-        accessMetadata: relation?.metadata,
+        accessMetadata: {
+          createdAt: relation?.createdAt,
+          updatedAt: relation?.updatedAt,
+          ...relation?.metadata,
+        },
       };
     });
 
