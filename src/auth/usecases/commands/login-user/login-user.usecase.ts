@@ -70,7 +70,7 @@ export class LoginUserUseCase {
       .find({
         $or: [{ ownerId: user.id }, { _id: { $in: organizationIds } }],
       })
-      .select('id name externalId metadata');
+      .select('id name externalId metadata createdAt updatedAt');
 
     const organizationsWithRoles = organizations.map((organization) => {
       const relation = organizationRelations.find(
