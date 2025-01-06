@@ -15,4 +15,11 @@ export class EmailsController {
 
     this.sendVerifyEmailService.sendVerifyEmail(payload);
   }
+
+  @OnEvent('users.update-email')
+  handleUserUpdateEmailEvent(payload: User) {
+    if (!payload.emailToken || !payload.email) return;
+
+    this.sendVerifyEmailService.sendVerifyEmail(payload);
+  }
 }

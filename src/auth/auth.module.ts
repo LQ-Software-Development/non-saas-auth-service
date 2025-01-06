@@ -33,6 +33,7 @@ import {
 } from 'src/organizations/entities/organization.schema';
 import { AuthController } from './auth.controller';
 import { RefreshTokenInfoService } from './services/refresh-token-info.service';
+import { ResendEmailVerificationService } from './services/resend-email-verification.service';
 
 @Module({
   imports: [
@@ -69,6 +70,7 @@ import { RefreshTokenInfoService } from './services/refresh-token-info.service';
     RequestResetPasswordUseCase,
     UpdateUserUseCase,
     VerifyUserEmailUseCase,
+    ResendEmailVerificationService,
     RefreshTokenInfoService,
     {
       provide: 'user-repository',
