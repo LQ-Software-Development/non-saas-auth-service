@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserRepositoryInterface } from '../../../repositories/user.repository.interface';
 import { LoginUserDto } from './login-user.dto';
@@ -13,6 +13,8 @@ import { Organization } from 'src/organizations/entities/organization.schema';
 
 @Injectable()
 export class LoginUserUseCase {
+  private readonly logger = new Logger(LoginUserUseCase.name);
+
   constructor(
     @Inject('user-repository')
     private readonly userRepository: UserRepositoryInterface,
@@ -62,9 +64,13 @@ export class LoginUserUseCase {
       .lean()
       .exec();
 
+    this.logger.debug('organizationRelations: ', organizationRelations);
+
     const organizationIds = organizationRelations.map(
       (relation) => relation.organizationId,
     );
+
+    this.logger.debug('organizationIds: ', organizationIds);
 
     const organizations = await this.organizationModel
       .find({
@@ -72,10 +78,14 @@ export class LoginUserUseCase {
       })
       .select('id name externalId metadata createdAt updatedAt');
 
+    this.logger.debug('organizations: ', organizations);
+
     const organizationsWithRoles = organizations.map((organization) => {
       const relation = organizationRelations.find(
         (relation) => relation.organizationId === organization.id,
       );
+
+      this.logger.debug('relation: ', relation);
 
       return {
         ...organization.toObject(),
