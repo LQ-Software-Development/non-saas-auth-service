@@ -58,8 +58,12 @@ export class LoginUserUseCase {
 
     const organizationRelations = await this.participantModel
       .find({
-        $or: whereClauseOrganizationRelations,
-        deletedAt: { $exists: false },
+        $and: [
+          {
+            $or: whereClauseOrganizationRelations,
+          },
+          { deletedAt: { $exists: false } },
+        ],
       })
       .lean()
       .exec();
