@@ -7,6 +7,7 @@ import {
   Participant,
   ParticipantSchema,
 } from 'src/organizations/participants/entities/participant.entity';
+import { DeleteOrganizationParticipantService } from './services/delete-organization-participant.service';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import {
   providers: [
     CreateOrganizationParticipantsService,
     ListOrganizationParticipantsService,
+    DeleteOrganizationParticipantService,
   ],
 })
 export class ParticipantsModule {}
