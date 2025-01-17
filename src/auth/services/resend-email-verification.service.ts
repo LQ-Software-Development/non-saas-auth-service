@@ -22,6 +22,8 @@ export class ResendEmailVerificationService {
 
     const emailToken = Math.floor(100000 + Math.random() * 900000).toString();
 
+    user.emailToken = emailToken;
+
     await this.userModel.findByIdAndUpdate(userId, {
       emailToken,
     });
