@@ -8,5 +8,22 @@ services:
       - MONGO_INITDB_ROOT_PASSWORD=password
     volumes:
       - mongodb_data:/data/db
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    environment:
+      - NODE_ENV=development
+      - AUTH_PORT=3000
+      - AUTH_DB_URL=mongodb://root:password@mongo:27017
+      - DB_COLLECTION_NAME=auth
+      - JWT_SECRET=your_jwt_secret
+    depends_on:
+      - mongo
 volumes:
   mongodb_data:
