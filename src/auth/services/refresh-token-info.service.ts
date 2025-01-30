@@ -75,6 +75,7 @@ export class RefreshTokenInfoService {
 
     return {
       name: user.name,
+      email: user.email,
       userId: user.id,
       verifiedEmail: user.verifiedEmail,
       token: newToken,

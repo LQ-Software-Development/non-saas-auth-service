@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserRepositoryInterface } from '../../../repositories/user.repository.interface';
 import { LoginUserDto } from './login-user.dto';
@@ -13,6 +13,8 @@ import { Organization } from 'src/organizations/entities/organization.schema';
 
 @Injectable()
 export class LoginUserUseCase {
+  private readonly logger = new Logger(LoginUserUseCase.name);
+
   constructor(
     @Inject('user-repository')
     private readonly userRepository: UserRepositoryInterface,
@@ -29,7 +31,10 @@ export class LoginUserUseCase {
     data: LoginUserDto,
   ): Promise<Result<{ token: string; userId: string }>> {
     const { document, email, password } = data;
-    const whereClauseOrganizationRelations = [];
+    const whereClauseOrganizationRelations: Array<{
+      document?: string;
+      email?: string;
+    }> = [];
 
     let user;
 
@@ -51,30 +56,51 @@ export class LoginUserUseCase {
       return Result.fail(new ForbiddenException('User or password incorrect'));
     }
 
-    const organizationRelations = await this.participantModel.find({
-      $or: whereClauseOrganizationRelations,
-    });
+    const organizationRelations = await this.participantModel
+      .find({
+        $and: [
+          {
+            $or: whereClauseOrganizationRelations,
+          },
+          { deletedAt: { $exists: false } },
+        ],
+      })
+      .lean()
+      .exec();
+
+    this.logger.debug('organizationRelations: ', organizationRelations);
 
     const organizationIds = organizationRelations.map(
       (relation) => relation.organizationId,
     );
 
+    this.logger.debug('organizationIds: ', organizationIds);
+
     const organizations = await this.organizationModel
       .find({
         $or: [{ ownerId: user.id }, { _id: { $in: organizationIds } }],
       })
-      .select('id name externalId metadata');
+      .select('id name externalId metadata createdAt updatedAt');
+
+    this.logger.debug('organizations: ', organizations);
 
     const organizationsWithRoles = organizations.map((organization) => {
       const relation = organizationRelations.find(
         (relation) => relation.organizationId === organization.id,
       );
 
+      this.logger.debug('relation: ', relation);
+
       return {
         ...organization.toObject(),
         id: organization.id,
-        participantId: relation?.id,
+        participantId: relation?._id,
         role: relation?.role || 'owner',
+        accessMetadata: {
+          ...relation?.metadata,
+          createdAt: relation?.createdAt,
+          updatedAt: relation?.updatedAt,
+        },
       };
     });
 
