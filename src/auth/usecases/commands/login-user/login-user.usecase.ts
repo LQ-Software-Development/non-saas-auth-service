@@ -98,6 +98,8 @@ export class LoginUserUseCase {
       name: user.name,
       userId: user.id,
       verifiedEmail: user.verifiedEmail,
+      phone: user.phone,
+      document: user.document,
       token,
       accesses: organizationsWithRoles,
     });
