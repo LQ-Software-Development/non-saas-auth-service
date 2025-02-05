@@ -17,10 +17,10 @@ export class User {
   @Prop({ default: false })
   verifiedEmail?: boolean;
 
-  @Prop()
+  @Prop({ nullable: true })
   emailToken: string;
 
-  @Prop()
+  @Prop({ nullable: true })
   document: string;
 
   @Prop({ default: now() })
