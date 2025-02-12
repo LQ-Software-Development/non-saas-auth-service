@@ -62,7 +62,9 @@ export class LoginUserUseCase {
           {
             $or: whereClauseOrganizationRelations,
           },
-          { deletedAt: { $exists: false } },
+          {
+            $or: [{ deletedAt: { $exists: false } }, { deletedAt: null }],
+          },
         ],
       })
       .lean()
