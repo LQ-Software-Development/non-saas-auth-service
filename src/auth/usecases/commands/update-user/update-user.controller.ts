@@ -1,15 +1,27 @@
-import { Body, Controller, Param, Patch } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Param,
+  Patch,
+  Query,
+} from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiCreatedResponse,
   ApiInternalServerErrorResponse,
   ApiNotFoundResponse,
   ApiOperation,
+  ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
 import { ControllerBase } from '../../../../core/application/controller.base';
 import { UpdateUserUseCase } from './update-user.usecase';
-import { UpdateUserDto } from './update-user.dto';
+import {
+  DuplicateFields,
+  UpdateUserDto,
+  UpdateUserOptionsDto,
+} from './update-user.dto';
 
 @Controller('updated-user')
 @ApiTags('Update User')
@@ -35,12 +47,32 @@ export class UpdateUserController extends ControllerBase {
     status: 500,
     description: 'Erro interno na hora de persistir o anuncio',
   })
+  @ApiQuery({ name: 'findDuplicates', enum: DuplicateFields, isArray: true })
   @Patch('/:id')
-  async update(@Param('id') id: string, @Body() data: UpdateUserDto) {
-    const result = await this.userUpdateUseCase.update(id, data);
+  async update(
+    @Param('id') id: string,
+    @Body() data: UpdateUserDto,
+    @Query() options: UpdateUserOptionsDto,
+  ) {
+    // const findDuplicates = this.findDuplicates(options.findDuplicates);
+    const result = await this.userUpdateUseCase.update(id, data, options);
     if (result.isFailure) {
       return this.handleErrorResponse(result.error);
     }
     return result.value;
   }
+
+  // findDuplicates(options: any) {
+  //   try {
+  //     console.log(`options ----------------> ${options}`);
+  //     const parsedOptions = JSON.parse(options);
+  //     if (!Array.isArray(parsedOptions)) {
+  //       throw new BadRequestException('Options should be an array');
+  //     }
+  //     return parsedOptions as UpdateUserOptionsDto;
+  //   } catch (error) {
+  //     console.warn(error.message);
+  //     return null;
+  //   }
+  // }
 }

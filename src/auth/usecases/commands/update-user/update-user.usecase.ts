@@ -1,22 +1,47 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { ConflictException, Inject, Injectable } from '@nestjs/common';
 import { UserRepositoryInterface } from '../../../repositories/user.repository.interface';
 import { Result } from '../../../../core/application/result';
 import { ForbiddenException } from '../../../../core/exceptions';
-import { UpdateUserDto } from './update-user.dto';
+import { UpdateUserDto, UpdateUserOptionsDto } from './update-user.dto';
 import { User } from 'src/auth/database/providers/schema/user.schema';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class UpdateUserUseCase {
   constructor(
     @Inject('user-repository')
     private readonly userRepository: UserRepositoryInterface,
+    @InjectModel(User.name)
+    private readonly userModel: Model<User>,
   ) {}
 
-  async update(id: string, data: UpdateUserDto): Promise<Result<User>> {
+  async update(
+    id: string,
+    data: UpdateUserDto,
+    options?: UpdateUserOptionsDto,
+  ): Promise<Result<User>> {
     const user = (await this.userRepository.findById(id)).value;
     if (!user) {
       return Result.fail(new ForbiddenException('User not found'));
     }
+
+    if (options?.findDuplicates && options.findDuplicates.length > 0) {
+      const field = options.findDuplicates;
+
+      console.log(`document --------------> ${data[field]}`);
+      if (data[field] === undefined) data[field] = null;
+
+      const duplicatedUser = await this.userModel.findOne({
+        where: { [field]: data[field] },
+      });
+
+      if (duplicatedUser)
+        throw new ConflictException(`Duplicated field found: ${field}`);
+
+      user[field] = data[field];
+    }
+
     user.email = data.email;
     user.name = data.name;
     user.updatedAt = new Date();

@@ -78,6 +78,8 @@ export class RefreshTokenInfoService {
       email: user.email,
       userId: user.id,
       verifiedEmail: user.verifiedEmail,
+      phone: user.phone,
+      document: user.document,
       token: newToken,
       accesses: organizationsWithRoles,
     };
