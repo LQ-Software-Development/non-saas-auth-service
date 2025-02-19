@@ -40,7 +40,7 @@ export class ParticipantsService {
       return {
         ...user?.toObject(),
         pending: user ? false : true,
-        userId: user._id,
+        userId: user?._id,
         ...relation.toObject(),
         metadata: {
           // This merge user and participant metadata
