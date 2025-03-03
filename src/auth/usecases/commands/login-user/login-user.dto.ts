@@ -6,6 +6,7 @@ export class LoginUserDto {
     example: 'example@gmail.com',
   })
   email: string;
+  
   @ApiProperty({
     description: 'CPF ou CNPJ do Usuário',
     example: '12345678900',
@@ -22,4 +23,10 @@ export class LoginUserDto {
     example: '123456',
   })
   password: string;
+
+  @ApiProperty({
+    description: 'Telefone do Usuário',
+    example: '12345678900',
+  })
+  phone: string;
 }

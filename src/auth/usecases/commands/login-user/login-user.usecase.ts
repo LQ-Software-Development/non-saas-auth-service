@@ -7,7 +7,7 @@ import { ForbiddenException } from '../../../../core/exceptions';
 import * as bcrypt from 'bcrypt';
 import { User } from 'src/auth/database/providers/schema/user.schema';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { Participant } from 'src/organizations/participants/entities/participant.entity';
 import { Organization } from 'src/organizations/entities/organization.schema';
 
@@ -30,13 +30,13 @@ export class LoginUserUseCase {
   async login(
     data: LoginUserDto,
   ): Promise<Result<{ token: string; userId: string }>> {
-    const { document, email, password } = data;
-    const whereClauseOrganizationRelations: Array<{
-      document?: string;
-      email?: string;
-    }> = [];
+    const { document, email, password, phone } = data;
+    let user: User & Document & {
+      id: string;
+      _id: Types.ObjectId;
+    };
 
-    let user;
+    const whereClauseOrganizationRelations = [];
 
     if (document) {
       user = await this.userModel.findOne({
@@ -48,6 +48,11 @@ export class LoginUserUseCase {
         email,
       });
       whereClauseOrganizationRelations.push({ email });
+    } else if (phone) {
+      user = await this.userModel.findOne({
+        phone,
+      });
+      whereClauseOrganizationRelations.push({ phone });
     } else {
       return Result.fail(new ForbiddenException('User or password incorrect'));
     }
