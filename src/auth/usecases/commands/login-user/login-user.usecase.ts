@@ -42,23 +42,32 @@ export class LoginUserUseCase {
       user = await this.userModel.findOne({
         document,
       });
-      whereClauseOrganizationRelations.push({ document });
     } else if (email) {
       user = await this.userModel.findOne({
         email,
       });
-      whereClauseOrganizationRelations.push({ email });
     } else if (phone) {
       user = await this.userModel.findOne({
         phone,
       });
-      whereClauseOrganizationRelations.push({ phone });
     } else {
       return Result.fail(new ForbiddenException('User or password incorrect'));
     }
 
     if (!user) {
       return Result.fail(new ForbiddenException('User or password incorrect'));
+    }
+
+    if (user.phone){  
+      whereClauseOrganizationRelations.push({ phone });
+    }
+
+    if (user.document) {
+      whereClauseOrganizationRelations.push({ document: user.document });
+    }
+
+    if (user.email) {
+      whereClauseOrganizationRelations.push({ email: user.email });
     }
 
     const organizationRelations = await this.participantModel
