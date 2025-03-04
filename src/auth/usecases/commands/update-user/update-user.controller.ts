@@ -54,25 +54,11 @@ export class UpdateUserController extends ControllerBase {
     @Body() data: UpdateUserDto,
     @Query() options: UpdateUserOptionsDto,
   ) {
-    // const findDuplicates = this.findDuplicates(options.findDuplicates);
     const result = await this.userUpdateUseCase.update(id, data, options);
     if (result.isFailure) {
       return this.handleErrorResponse(result.error);
     }
+
     return result.value;
   }
-
-  // findDuplicates(options: any) {
-  //   try {
-  //     console.log(`options ----------------> ${options}`);
-  //     const parsedOptions = JSON.parse(options);
-  //     if (!Array.isArray(parsedOptions)) {
-  //       throw new BadRequestException('Options should be an array');
-  //     }
-  //     return parsedOptions as UpdateUserOptionsDto;
-  //   } catch (error) {
-  //     console.warn(error.message);
-  //     return null;
-  //   }
-  // }
 }

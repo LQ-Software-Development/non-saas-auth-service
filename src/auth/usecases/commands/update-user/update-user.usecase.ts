@@ -26,6 +26,19 @@ export class UpdateUserUseCase {
       return Result.fail(new ForbiddenException('User not found'));
     }
 
+    // verificar se já tem um usuário com o mesmo email telefone ou documento
+    const duplicatedUser = await this.userModel.findOne({
+      $or: [
+        data.email && { email: data.email },
+        data.phone && { phone: data.phone },
+        data.document && { document: data.document },
+      ].filter(Boolean),
+    });
+
+    if (duplicatedUser) {
+      throw new ConflictException('Duplicated field found');
+    }
+
     if (options?.findDuplicates && options.findDuplicates.length > 0) {
       const field = options.findDuplicates;
 
