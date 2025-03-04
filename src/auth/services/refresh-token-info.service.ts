@@ -34,6 +34,10 @@ export class RefreshTokenInfoService {
       whereClauseOrganizationRelations.push({ document: user.document });
     }
 
+    if (user.phone) {
+      whereClauseOrganizationRelations.push({ phone: user.phone });
+    }
+
     const organizationRelations = await this.participantModel.find({
       $or: whereClauseOrganizationRelations,
     });
