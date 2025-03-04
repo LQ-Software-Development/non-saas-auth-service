@@ -15,6 +15,8 @@ export class Participant {
   document: string;
 
   @Prop()
+  phone: string;
+  @Prop()
   organizationId: string;
 
   @Prop(raw({}))
