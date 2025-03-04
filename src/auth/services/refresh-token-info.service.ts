@@ -23,6 +23,8 @@ export class RefreshTokenInfoService {
 
     const user = await this.userModel.findById(userId);
 
+    console.log(user);
+
     if (!user) {
       throw new ForbiddenException('User or password incorrect');
     }
