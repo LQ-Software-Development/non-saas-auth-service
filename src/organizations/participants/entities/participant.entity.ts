@@ -16,6 +16,7 @@ export class Participant {
 
   @Prop()
   phone: string;
+
   @Prop()
   organizationId: string;
 

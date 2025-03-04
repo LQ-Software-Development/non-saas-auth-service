@@ -17,6 +17,13 @@ export class CreateParticipantDto {
   email: string;
 
   @ApiProperty({
+    description: 'The phone of the participant',
+    example: '62999913545',
+  })
+  @IsNotEmpty()
+  phone: string;
+
+  @ApiProperty({
     description: 'The organization id of the participant',
     example: '1234567890',
   })
