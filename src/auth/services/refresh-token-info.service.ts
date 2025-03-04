@@ -44,6 +44,8 @@ export class RefreshTokenInfoService {
       $or: whereClauseOrganizationRelations,
     });
 
+    console.log(organizationRelations);
+
     const organizationIds = organizationRelations.map(
       (relation) => relation.organizationId,
     );
@@ -58,6 +60,8 @@ export class RefreshTokenInfoService {
       const relation = organizationRelations.find(
         (relation) => relation.organizationId === organization.id,
       );
+
+      console.log(relation);
 
       return {
         ...organization.toObject(),
