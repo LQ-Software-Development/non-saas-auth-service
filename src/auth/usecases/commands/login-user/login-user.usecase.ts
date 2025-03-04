@@ -54,11 +54,21 @@ export class LoginUserUseCase {
       return Result.fail(new ForbiddenException('User or password incorrect'));
     }
 
-    console.log(user);
+   
 
     if (!user) {
       return Result.fail(new ForbiddenException('User or password incorrect'));
     }
+
+    this.logger.debug('user: ', user);
+
+    if (!bcrypt.compareSync(password, user.password)) {
+      return Result.fail(new ForbiddenException('User or password incorrect'));
+    }
+
+    this.logger.debug('User authenticated');
+
+    console.log(user);
 
     if (user.phone){  
       whereClauseOrganizationRelations.push({ phone });
@@ -121,14 +131,6 @@ export class LoginUserUseCase {
         },
       };
     });
-
-    if (!user) {
-      return Result.fail(new ForbiddenException('User or password incorrect'));
-    }
-
-    if (!bcrypt.compareSync(password, user.password)) {
-      return Result.fail(new ForbiddenException('User or password incorrect'));
-    }
 
     const token = this.jwtService.sign({
       sub: user.id,
