@@ -10,8 +10,7 @@ import {
 import { UserRepository } from './repositories/implements/user.respository';
 import { ChangeUserPassowrdController } from './usecases/commands/change-user-password/change-user-password.controller';
 import { ChangeUserPassowrdUseCase } from './usecases/commands/change-user-password/change-user-password.usecase';
-import { LoginUserController } from './usecases/commands/login-user/login-user.controller';
-import { LoginUserUseCase } from './usecases/commands/login-user/login-user.usecase';
+import { LoginUserService } from './services/login-user.service';
 import { RegisterUserController } from './usecases/commands/register-user/register-user.controller';
 import { RegisterUserUseCase } from './usecases/commands/register-user/register-user.usecase';
 import { RequestResetEmailController } from './usecases/commands/reset-password/request-reset-email/request-reset-email.controller';
@@ -53,7 +52,6 @@ import { ResendEmailVerificationService } from './services/resend-email-verifica
     ]),
   ],
   controllers: [
-    LoginUserController,
     RegisterUserController,
     ChangeUserPassowrdController,
     RequestResetEmailController,
@@ -63,7 +61,7 @@ import { ResendEmailVerificationService } from './services/resend-email-verifica
     AuthController,
   ],
   providers: [
-    LoginUserUseCase,
+    LoginUserService,
     RegisterUserUseCase,
     ChangeUserPassowrdUseCase,
     RequestResetEmailUseCase,

@@ -1,0 +1,13 @@
+{
+  "preset": "ts-jest",
+  "moduleFileExtensions": ["js", "json", "ts"],
+  "rootDir": ".",
+  "testEnvironment": "node",
+  "testRegex": ".e2e-spec.ts$",
+  "moduleNameMapper": {
+    "^src/(.*)$": "<rootDir>/../src/$1",
+    "^@auth/(.*)$": "<rootDir>/../src/auth/$1",
+    "^@core/(.*)$": "<rootDir>/../src/core/$1",
+    "^@organizations/(.*)$": "<rootDir>/../src/organizations/$1"
+  }
+} 
