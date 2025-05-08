@@ -53,8 +53,33 @@ export class ParticipantsService {
     return usersWithRelations;
   }
 
-  findOne({ id, organizationId }: { id: string; organizationId: string }) {
-    return this.participantModel.findOne({ _id: id, organizationId });
+  async findOne({ id, organizationId }: { id: string; organizationId: string }) {
+    // Busca o participante na organização
+    const relation = await this.participantModel.findOne({ _id: id, organizationId });
+    if (!relation) {
+      return null;
+    }
+    // Busca o usuário correspondente por e-mail ou documento
+    const user = await this.userModel.findOne({
+      $or: [
+        { email: relation.email },
+        { document: relation.document },
+      ],
+    });
+    // Converte documentos para objetos plain
+    const relationObj = relation.toObject();
+    const userObj = user?.toObject();
+    // Retorna combinação dos dados com userId e pending
+    return {
+      ...userObj,
+      pending: user ? false : true,
+      userId: user?._id,
+      ...relationObj,
+      metadata: {
+        ...relationObj.metadata,
+      },
+      role: relationObj.role,
+    };
   }
 
   update(updateParticipantDto: UpdateParticipantDto) {
