@@ -12,6 +12,7 @@ import {
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { GetUserResponseDto } from './dto/get-user-response.dto';
 import { ApiHeader } from '@nestjs/swagger';
 import { ApplicationKeyGuard } from 'src/auth/guards/application-key.guard';
 
@@ -45,9 +46,8 @@ export class UsersController {
 
   @Get(':id')
   findOne(
-    @Param('id')
-    id: string,
-  ) {
+    @Param('id') id: string,
+  ): Promise<GetUserResponseDto> {
     return this.usersService.findOne(id);
   }
 

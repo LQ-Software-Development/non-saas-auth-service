@@ -10,18 +10,8 @@ import axios from 'axios';
 import * as FormData from 'form-data';
 import { Participant } from 'src/organizations/participants/entities/participant.entity';
 import { Organization } from 'src/organizations/entities/organization.schema';
-
-interface OrganizationAccessFormat {
-  id: string;
-  name: string;
-  externalId?: string;
-  metadata?: Record<string, any>;
-  createdAt: Date;
-  updatedAt: Date;
-  participantId?: Types.ObjectId;
-  role: string;
-  accessMetadata?: Record<string, any>;
-}
+import { OrganizationAccessFormatDto } from './dto/organization-access-format.dto';
+import { GetUserResponseDto } from './dto/get-user-response.dto';
 
 @Injectable()
 export class UsersService {
@@ -110,7 +100,7 @@ export class UsersService {
     }
   }
 
-  async findOne(id: string) {
+  async findOne(id: string): Promise<GetUserResponseDto> {
     const user = await this.userModel.findById(id).lean().exec();
     if (!user) {
       throw new NotFoundException(`User com id ${id} não encontrado`);
@@ -149,7 +139,7 @@ export class UsersService {
     userIdString: string,
     loginIdentifierField: 'email' | 'phone' | 'document',
     loginIdentifierValue: string,
-  ): Promise<OrganizationAccessFormat[]> {
+  ): Promise<OrganizationAccessFormatDto[]> {
     let primaryParticipants: any[] = [];
     let validatedSecondaryParticipants: any[] = [];
 
@@ -265,17 +255,17 @@ export class UsersService {
       .exec();
 
     // Passo 7: Formatar Acessos
-    const organizationsWithRoles: OrganizationAccessFormat[] = organizations.map((organization) => {
+    const organizationsWithRoles: OrganizationAccessFormatDto[] = organizations.map((organization) => {
       const orgIdString = String(organization._id);
       const relation = allValidParticipants.find(
         (p) => String(p.organizationId) === orgIdString,
       );
       let role: string;
-      let participantId: Types.ObjectId | undefined = undefined;
+      let participantId: string | undefined = undefined;
       let accessMetadata: Record<string, any> | undefined = undefined;
       if (relation) {
         role = relation.role || 'member';
-        participantId = relation._id;
+        participantId = relation._id.toString();
         accessMetadata = {
           ...(relation.metadata || {}),
           createdAt: relation.createdAt,
