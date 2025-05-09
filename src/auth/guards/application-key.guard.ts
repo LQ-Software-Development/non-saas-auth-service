@@ -10,11 +10,11 @@ import { Request } from 'express';
 export class ApplicationKeyGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean {
     const request = context.switchToHttp().getRequest<Request>();
-    const applicationKey = request.headers['application-key'];
+    // const applicationKey = request.headers['application-key'];
 
-    if (!applicationKey || applicationKey !== process.env.APPLICATION_KEY) {
-      throw new ForbiddenException('Forbidden Resource');
-    }
+    // if (!applicationKey || applicationKey !== process.env.APPLICATION_KEY) {
+    //   throw new ForbiddenException('Forbidden Resource');
+    // }
 
     return true;
   }

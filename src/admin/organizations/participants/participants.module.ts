@@ -8,11 +8,13 @@ import {
   ParticipantSchema,
 } from 'src/organizations/participants/entities/participant.entity';
 import { DeleteOrganizationParticipantService } from './services/delete-organization-participant.service';
+import { User, UserSchema } from 'src/auth/database/providers/schema/user.schema';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: Participant.name, schema: ParticipantSchema },
+      { name: User.name, schema: UserSchema },
     ]),
   ],
   controllers: [ParticipantsController],
