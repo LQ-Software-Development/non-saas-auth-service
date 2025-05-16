@@ -12,9 +12,6 @@ export class ApplicationKeyGuard implements CanActivate {
     const request = context.switchToHttp().getRequest<Request>();
     const applicationKey = request.headers['application-key'];
 
-    console.log(applicationKey);
-    console.log(process.env.APPLICATION_KEY);
-
     if (!applicationKey || applicationKey !== process.env.APPLICATION_KEY) {
       throw new ForbiddenException('Forbidden Resource');
     }

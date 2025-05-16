@@ -65,6 +65,7 @@ export class RefreshTokenInfoService {
 
       return {
         ...organization.toObject(),
+        accessMetadata: relation?.metadata,
         id: organization.id,
         participantId: relation?.id,
         role: relation?.role || 'owner',
