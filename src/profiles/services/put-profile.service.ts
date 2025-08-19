@@ -22,7 +22,7 @@ export class PutProfileService {
             }
         }
 
-        const filter = { userId, organizationId };
+        const filter = { userId, organizationId: organizationId || null };
         const update = { $set: data };
         const options = { upsert: true, new: true, setDefaultsOnInsert: true };
 

@@ -56,7 +56,7 @@ export class LoginUserService {
     private readonly participantModel: Model<Participant>,
     @InjectModel(Organization.name)
     private readonly organizationModel: Model<Organization>,
-  ) {}
+  ) { }
 
   async login(data: LoginUserDto): Promise<Result<LoginSuccessPayload>> {
     try {
@@ -72,7 +72,11 @@ export class LoginUserService {
 
       const token = this.jwtService.sign({
         sub: idString,
-        accesses: accesses,
+        accesses: accesses.map((access) => ({
+          ...access,
+          metadata: data.noMetadataOnToken ? undefined : access.metadata,
+          accessMetadata: data.noMetadataOnToken ? undefined : access.accessMetadata,
+        })),
         name: user.name,
         email: user.email,
         verifiedEmail: user.verifiedEmail,
@@ -124,7 +128,7 @@ export class LoginUserService {
     }
 
     if (!user) {
-       throw new ForbiddenException('User or password incorrect');
+      throw new ForbiddenException('User or password incorrect');
     }
 
     const idString = user._id.toString();
@@ -197,7 +201,7 @@ export class LoginUserService {
           participant[secId.field as keyof Participant] === secId.value
         );
         if (!matchedInfo) {
-            continue; // Pula este participante
+          continue; // Pula este participante
         }
         const matchedField = matchedInfo.field;
         // Validação Cruzada Simplificada:
@@ -221,8 +225,8 @@ export class LoginUserService {
       ...validatedSecondaryParticipants.map(p => ({ ...p, organizationId: String(p.organizationId) })),
     ];
 
-    if (allValidParticipants.length === 0 && !(await this.organizationModel.exists({ ownerId: userIdString}))) {
-        return [];
+    if (allValidParticipants.length === 0 && !(await this.organizationModel.exists({ ownerId: userIdString }))) {
+      return [];
     }
 
     // --- Passo 6: Buscar Organizações --- 
@@ -230,10 +234,10 @@ export class LoginUserService {
       (relation) => relation.organizationId,
     ).filter(id => id);
     const findOrConditions: any[] = [
-       { ownerId: userIdString }
+      { ownerId: userIdString }
     ];
     if (organizationIdsToSearch.length > 0) {
-        findOrConditions.push({ _id: { $in: organizationIdsToSearch } });
+      findOrConditions.push({ _id: { $in: organizationIdsToSearch } });
     }
     const organizations = await this.organizationModel
       .find({ $or: findOrConditions })
