@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsEmail, IsOptional, IsString, MinLength } from 'class-validator';
 
 export class LoginUserDto {
@@ -11,7 +11,7 @@ export class LoginUserDto {
   @IsEmail()
   email?: string;
   
-  @ApiProperty({
+  @ApiPropertyOptional({
     description: 'CPF ou CNPJ do Usuário',
     example: '12345678900',
     required: false,
@@ -20,13 +20,14 @@ export class LoginUserDto {
   @IsString()
   document?: string;
 
-  @ApiProperty({
-    example: 'master',
+    @ApiPropertyOptional({
+    description: 'Telefone do Usuário',
+    example: '12345678900',
     required: false,
   })
   @IsOptional()
   @IsString()
-  role?: string; // Role não é usado no login service atual, mas mantendo por enquanto
+  phone?: string;
 
   @ApiProperty({
     description: 'Senha do Usuário',
@@ -37,12 +38,11 @@ export class LoginUserDto {
   @MinLength(6)
   password: string;
 
-  @ApiProperty({
-    description: 'Telefone do Usuário',
-    example: '12345678900',
-    required: false,
+
+
+  @ApiPropertyOptional({
+    description: 'Faz o login retornar sem metadados'
   })
   @IsOptional()
-  @IsString()
-  phone?: string;
-} 
+  noMetadataOnToken?: boolean;
+}

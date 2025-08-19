@@ -18,7 +18,13 @@ export class Participant {
   phone: string;
 
   @Prop()
-  organizationId: string;
+  organizationId?: string;
+
+  @Prop()
+  userId: string;
+
+  @Prop(raw({}))
+  permissions?: Record<string, any>;
 
   @Prop(raw({}))
   metadata: Record<string, any>;
