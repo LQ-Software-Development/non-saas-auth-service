@@ -17,14 +17,14 @@ export class ProfilesController {
 
     @Get()
     async getAccesses(@Req() request: any) {
-        const userId = request.user?.id;
+        const userId = request.user?.sub;
 
         return this.getAccessesService.execute(userId);
     }
 
     @Get(':organizationId')
     async getAccess(@Req() request: any, @Param('organizationId') organizationId: string) {
-        const userId = request.user?.id;
+        const userId = request.user?.sub;
 
         return this.getAccessService.execute(userId, organizationId);
     }

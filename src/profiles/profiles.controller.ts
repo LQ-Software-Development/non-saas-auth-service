@@ -22,7 +22,7 @@ export class ProfilesController {
 
     @Get()
     async getProfile(@Req() request: any) {
-        const userId = request.user?.id;
+        const userId = request.user?.sub;
         const organizationId = request.headers['x-organization-id'];
 
         return this.getProfileService.execute(userId, organizationId);
@@ -30,7 +30,7 @@ export class ProfilesController {
 
     @Put()
     async putProfile(@Req() request: any, @Body() dto: PutProfileDto) {
-        const userId = request.user?.id;
+        const userId = request.user?.sub;
         const organizationId = request.headers['x-organization-id'];
 
         return this.putProfileService.execute({ userId, organizationId, ...dto });
