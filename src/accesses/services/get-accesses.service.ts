@@ -52,6 +52,15 @@ export class GetAccessesService {
             ...org.toObject(),
             permissions: participants.find(participant => participant.organizationId === org.id)?.permissions || {},
             role: participants.find(participant => participant.organizationId === org.id)?.role || 'owner',
-        }));
+        // Create a Map for O(1) participant lookup by organizationId
+        const participantByOrgId = new Map(participants.map(p => [String(p.organizationId), p]));
+        return organizations.map(org => {
+            const participant = participantByOrgId.get(String(org.id));
+            return {
+                ...org.toObject(),
+                permissions: participant?.permissions || {},
+                role: participant?.role || 'owner',
+            };
+        });
     }
 }
