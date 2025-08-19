@@ -9,6 +9,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { JwtModule } from '@nestjs/jwt';
 import { AdminModule } from './admin/admin.module';
 import { ProfilesModule } from './profiles/profiles.module';
+import { AccessesModule } from './accesses/accesses.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { ProfilesModule } from './profiles/profiles.module';
     OrganizationsModule,
     AdminModule,
     ProfilesModule,
+    AccessesModule,
   ],
 })
 export class AppModule { }

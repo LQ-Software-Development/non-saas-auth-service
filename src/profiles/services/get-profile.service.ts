@@ -9,7 +9,7 @@ export class GetProfileService {
     ) { }
 
     async execute(userId: string, organizationId?: string) {
-        const profile = await this.userModel.findOne({ userId, organizationId });
+        const profile = await this.userModel.findOne({ userId, organizationId: organizationId || null });
 
         if (!profile && organizationId) {
             throw new Error('Profile not found');
