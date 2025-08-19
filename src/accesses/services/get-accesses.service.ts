@@ -19,9 +19,9 @@ export class GetAccessesService {
             this.organizationsRepository.find({ ownerId: userId }),
         ]);
 
-        const participantOrganizations = await this.organizationsRepository.find({
-            _id: { $in: participants.map(p => p.organizationId) }
-        });
+        const participantOrganizations = await Promise.all(
+            participants.map(p => this.organizationsRepository.findById(p.organizationId))
+        );
 
         const allOrganizationsMap = new Map();
 
