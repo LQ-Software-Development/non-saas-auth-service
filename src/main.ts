@@ -24,6 +24,9 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, swaggerConfig);
 
   SwaggerModule.setup('docs', app, document, {
+    swaggerOptions: {
+      persistAuthorization: true,
+    },
     customJs: [
       'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui-bundle.min.js',
       'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui-standalone-preset.min.js',
@@ -40,8 +43,7 @@ async function bootstrap() {
 
 bootstrap().then(() => {
   console.log(
-    `Api is running, see the documentation at http://localhost:${
-      process.env.AUTH_PORT || 3000
+    `Api is running, see the documentation at http://localhost:${process.env.AUTH_PORT || 3000
     }/docs`,
   );
 });

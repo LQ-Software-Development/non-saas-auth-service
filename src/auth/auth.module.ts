@@ -33,6 +33,8 @@ import {
 import { AuthController } from './auth.controller';
 import { RefreshTokenInfoService } from './services/refresh-token-info.service';
 import { ResendEmailVerificationService } from './services/resend-email-verification.service';
+import { AuthV2Controller } from './auth-v2.controller';
+import { LoginWithoutMetadataService } from './services/login-without-metadata.service';
 
 @Module({
   imports: [
@@ -59,6 +61,7 @@ import { ResendEmailVerificationService } from './services/resend-email-verifica
     UpdateUserController,
     VerifyUserEmailController,
     AuthController,
+    AuthV2Controller,
   ],
   providers: [
     LoginUserService,
@@ -70,6 +73,7 @@ import { ResendEmailVerificationService } from './services/resend-email-verifica
     VerifyUserEmailUseCase,
     ResendEmailVerificationService,
     RefreshTokenInfoService,
+    LoginWithoutMetadataService,
     {
       provide: 'user-repository',
       useClass: UserRepository,
@@ -91,4 +95,4 @@ import { ResendEmailVerificationService } from './services/resend-email-verifica
     ...databaseProviders,
   ],
 })
-export class AuthModule {}
+export class AuthModule { }
