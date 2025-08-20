@@ -1,11 +1,13 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { User } from 'src/auth/database/providers/schema/user.schema';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 import { Parser } from 'json2csv';
 import * as fs from 'fs';
 import * as path from 'path';
+import * as bcrypt from 'bcrypt';
 import axios from 'axios';
 import * as FormData from 'form-data';
 import { Participant } from 'src/organizations/participants/entities/participant.entity';
@@ -22,10 +24,49 @@ export class UsersService {
     private participantModel: Model<Participant>,
     @InjectModel(Organization.name)
     private organizationModel: Model<Organization>,
-  ) {}
+  ) { }
 
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  async create(createUserDto: CreateUserDto) {
+    const query: { [key: string]: string }[] = [];
+
+    if (createUserDto.email) {
+      query.push({ email: createUserDto.email });
+    }
+
+    if (createUserDto.document) {
+      query.push({ document: createUserDto.document });
+    }
+
+    if (createUserDto.phone) {
+      query.push({ phone: createUserDto.phone });
+    }
+
+    const userExists = await this.userModel.exists({ $or: query }).lean();
+
+    if (userExists) {
+      throw new ConflictException('User already exists with the same email, document or phone');
+    }
+
+    const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
+
+    const user = await this.userModel.create({
+      email: createUserDto.email,
+      document: createUserDto.document,
+      phone: createUserDto.phone,
+      password: hashedPassword,
+    });
+
+    const profile = await this.participantModel.create({
+      userId: user.toObject()._id,
+      name: createUserDto.name,
+      metadata: createUserDto.metadata,
+      organizationId: createUserDto.organizationId,
+    });
+
+    return {
+      user,
+      profile,
+    };
   }
 
   async findAll(props: { page: number; limit: number }) {
@@ -291,8 +332,90 @@ export class UsersService {
     return organizationsWithRoles;
   }
 
-  update() {
-    return `This action updates a user`;
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    // Buscar o usuário atual
+    const existingUser = await this.userModel.findById(id).lean();
+
+    if (!existingUser) {
+      throw new NotFoundException(`User com id ${id} não encontrado`);
+    }
+
+    // Buscar o perfil principal do usuário
+    const existingProfile = await this.participantModel.findOne({ userId: id, organizationId: updateUserDto.organizationId }).lean();
+
+    if (!existingProfile) {
+      throw new NotFoundException(`Perfil do usuário com id ${id} na organização ${updateUserDto.organizationId} não encontrado`);
+    }
+
+    // Verificar conflitos apenas para campos de login que foram alterados
+    const conflictQuery: { [key: string]: string }[] = [];
+
+    if (updateUserDto.email && updateUserDto.email !== existingUser.email) {
+      conflictQuery.push({ email: updateUserDto.email });
+    }
+
+    if (updateUserDto.document && updateUserDto.document !== existingUser.document) {
+      conflictQuery.push({ document: updateUserDto.document });
+    }
+
+    if (updateUserDto.phone && updateUserDto.phone !== existingUser.phone) {
+      conflictQuery.push({ phone: updateUserDto.phone });
+    }
+
+    // Verificar se existe outro usuário com os novos identificadores
+    if (conflictQuery.length > 0) {
+      const userExists = await this.userModel.exists({
+        $and: [
+          { _id: { $ne: id } }, // Excluir o próprio usuário
+          { $or: conflictQuery }
+        ]
+      }).lean();
+
+      if (userExists) {
+        throw new ConflictException('Já existe outro usuário com o mesmo email, documento ou telefone');
+      }
+    }
+
+    // Atualizar usuário
+    const updatedUser = await this.userModel.findByIdAndUpdate(
+      id,
+      {
+        email: updateUserDto.email,
+        document: updateUserDto.document,
+        phone: updateUserDto.phone,
+        password: updateUserDto.password ? await bcrypt.hash(updateUserDto.password, 10) : undefined,
+        updatedAt: new Date(),
+      }
+    );
+
+    // Atualizar perfil se existir
+    let updatedProfile = null;
+
+    if (existingProfile) {
+      updatedProfile = await this.participantModel.findByIdAndUpdate(
+        existingProfile._id,
+        {
+          name: updateUserDto.name,
+          metadata: updateUserDto.metadata || {},
+          organizationId: updateUserDto.organizationId,
+          updatedAt: new Date(),
+        },
+        { new: true }
+      );
+    } else if (!existingProfile && (updateUserDto.name || updateUserDto.metadata || updateUserDto.organizationId)) {
+      // Criar perfil se não existir e há dados de perfil para salvar
+      updatedProfile = await this.participantModel.create({
+        userId: id,
+        name: updateUserDto.name,
+        metadata: updateUserDto.metadata || {},
+        organizationId: updateUserDto.organizationId,
+      });
+    }
+
+    return {
+      user: updatedUser,
+      profile: updatedProfile,
+    };
   }
 
   remove(id: number) {

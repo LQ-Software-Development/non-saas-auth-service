@@ -13,9 +13,10 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { GetUserResponseDto } from './dto/get-user-response.dto';
-import { ApiHeader } from '@nestjs/swagger';
+import { ApiHeader, ApiTags } from '@nestjs/swagger';
 import { ApplicationKeyGuard } from 'src/auth/guards/application-key.guard';
 
+@ApiTags('Users Management')
 @ApiHeader({
   name: 'application-key',
   required: true,
@@ -24,7 +25,7 @@ import { ApplicationKeyGuard } from 'src/auth/guards/application-key.guard';
 @UseGuards(ApplicationKeyGuard)
 @Controller('admin/users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: UsersService) { }
 
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
@@ -53,7 +54,7 @@ export class UsersController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update();
+    return this.usersService.update(id, updateUserDto);
   }
 
   @Delete(':id')
