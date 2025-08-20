@@ -61,6 +61,7 @@ export class UsersService {
       name: createUserDto.name,
       metadata: createUserDto.metadata,
       organizationId: createUserDto.organizationId,
+      role: createUserDto.role || 'member',
     });
 
     return {
@@ -398,6 +399,7 @@ export class UsersService {
           name: updateUserDto.name,
           metadata: updateUserDto.metadata || {},
           organizationId: updateUserDto.organizationId,
+          role: updateUserDto.role || 'member',
           updatedAt: new Date(),
         },
         { new: true }
@@ -409,6 +411,7 @@ export class UsersService {
         name: updateUserDto.name,
         metadata: updateUserDto.metadata || {},
         organizationId: updateUserDto.organizationId,
+        role: updateUserDto.role || 'member',
       });
     }
 

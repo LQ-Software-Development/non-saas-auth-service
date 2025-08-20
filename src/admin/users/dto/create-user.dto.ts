@@ -21,4 +21,7 @@ export class CreateUserDto {
 
     @ApiPropertyOptional()
     organizationId?: string;
+
+    @ApiPropertyOptional()
+    role?: string;
 }
