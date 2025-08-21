@@ -1,4 +1,4 @@
-import { ForbiddenException, Inject, Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -16,9 +16,9 @@ export class RefreshTokenInfoService {
     private readonly organizationModel: Model<Organization>,
     @InjectModel(Participant.name)
     private readonly participantModel: Model<Participant>,
-  ) {}
+  ) { }
 
-  async execute(userId: string) {
+  async execute(userId: string, withMetadata = true) {
     const whereClauseOrganizationRelations = [];
 
     const user = await this.userModel.findById(userId);
@@ -78,7 +78,11 @@ export class RefreshTokenInfoService {
 
     const newToken = this.jwtService.sign({
       sub: user.id,
-      accesses: organizationsWithRoles,
+      accesses: organizationsWithRoles.map((org) => ({
+        ...org,
+        accessMetadata: withMetadata ? org.accessMetadata : undefined,
+        metadata: withMetadata ? org.metadata : undefined,
+      })),
       name: user.name,
       email: user.email,
       verifiedEmail: user.verifiedEmail,

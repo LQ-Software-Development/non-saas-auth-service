@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Put, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, Put, Query, Request, UseGuards } from '@nestjs/common';
 import { RefreshTokenInfoService } from './services/refresh-token-info.service';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import {
@@ -22,12 +22,12 @@ export class AuthController {
     private readonly refreshTokenInfoService: RefreshTokenInfoService,
     private readonly resendEmailVerificationService: ResendEmailVerificationService,
     private readonly loginUserService: LoginUserService,
-  ) {}
+  ) { }
 
   @UseGuards(JwtAuthGuard)
   @Post('auth/refresh-token-info')
-  async refreshTokenInfo(@Request() req: any) {
-    return this.refreshTokenInfoService.execute(req.user.sub);
+  async refreshTokenInfo(@Request() req: any, @Query('withMetadata') withMetadata: string) {
+    return this.refreshTokenInfoService.execute(req.user.sub, withMetadata !== 'false');
   }
 
   @UseGuards(JwtAuthGuard)
