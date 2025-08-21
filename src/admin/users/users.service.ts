@@ -59,6 +59,9 @@ export class UsersService {
     const profile = await this.participantModel.create({
       userId: user.toObject()._id,
       name: createUserDto.name,
+      email: createUserDto.email,
+      document: createUserDto.document,
+      phone: createUserDto.phone,
       metadata: createUserDto.metadata,
       organizationId: createUserDto.organizationId,
       role: createUserDto.role || 'member',
@@ -183,7 +186,7 @@ export class UsersService {
     loginIdentifierValue: string,
   ): Promise<OrganizationAccessFormatDto[]> {
     let primaryParticipants: any[] = [];
-    let validatedSecondaryParticipants: any[] = [];
+    const validatedSecondaryParticipants: any[] = [];
 
     // Passo 1: Busca Primária
     if (loginIdentifierValue) {
@@ -397,6 +400,9 @@ export class UsersService {
         existingProfile._id,
         {
           name: updateUserDto.name,
+          email: updateUserDto.email,
+          document: updateUserDto.document,
+          phone: updateUserDto.phone,
           metadata: updateUserDto.metadata || {},
           organizationId: updateUserDto.organizationId,
           role: updateUserDto.role || 'member',
@@ -409,6 +415,9 @@ export class UsersService {
       updatedProfile = await this.participantModel.create({
         userId: id,
         name: updateUserDto.name,
+        email: updateUserDto.email,
+        document: updateUserDto.document,
+        phone: updateUserDto.phone,
         metadata: updateUserDto.metadata || {},
         organizationId: updateUserDto.organizationId,
         role: updateUserDto.role || 'member',
