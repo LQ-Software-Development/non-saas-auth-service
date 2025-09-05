@@ -4,12 +4,13 @@ import { GetProfileService } from "./services/get-profile.service";
 import { MongooseModule } from "@nestjs/mongoose";
 import { Participant, ParticipantSchema } from "src/organizations/participants/entities/participant.entity";
 import { PutProfileService } from "./services/put-profile.service";
-import { User, UserSchema } from "src/auth/database/providers/schema/user.schema";
+import { Organization, OrganizationSchema } from "src/organizations/entities/organization.schema";
 
 @Module({
     imports: [
         MongooseModule.forFeature([
-            { name: Participant.name, schema: ParticipantSchema }
+            { name: Participant.name, schema: ParticipantSchema },
+            { name: Organization.name, schema: OrganizationSchema }
         ])
     ],
     controllers: [ProfilesController],
