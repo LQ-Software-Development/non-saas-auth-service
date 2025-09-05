@@ -3,11 +3,14 @@ import { Model } from "mongoose";
 import { Participant } from "src/organizations/participants/entities/participant.entity";
 import { PutProfileDto } from "../dto/put-profile.dto";
 import { ForbiddenException } from "@nestjs/common";
+import { Organization } from "src/organizations/entities/organization.schema";
 
 export class PutProfileService {
     constructor(
         @InjectModel(Participant.name)
         private readonly profileModel: Model<Participant>,
+        @InjectModel(Organization.name)
+        private readonly organizationModel: Model<Organization>,
     ) { }
 
     async execute({ userId, organizationId, ...data }: PutProfileDto) {
@@ -16,8 +19,9 @@ export class PutProfileService {
 
         if (organizationId) {
             const existsAccess = await this.profileModel.findOne({ userId, organizationId });
+            const existsOrganization = await this.organizationModel.exists({ _id: organizationId, ownerId: userId });
 
-            if (!existsAccess) {
+            if (!existsAccess && !existsOrganization) {
                 throw new ForbiddenException('User does not have access to this organization');
             }
         }
