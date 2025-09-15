@@ -35,6 +35,13 @@ export class RegisterUserUseCase {
         return Result.fail(new ForbiddenException('User existent'));
       }
     }
+    if (data.phone) {
+      const userPhoneExists = await this.userRepository.findByPhone(data.phone);
+
+      if (userPhoneExists) {
+        return Result.fail(new ForbiddenException('User existent'));
+      }
+    }
 
     const passwordHash = bcrypt.hashSync(data.password, 10);
 
