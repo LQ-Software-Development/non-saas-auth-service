@@ -94,5 +94,10 @@ import { LoginWithoutMetadataService } from './services/login-without-metadata.s
     ...userSchemaProviders,
     ...databaseProviders,
   ],
+  exports: [
+    'user-repository',
+    ...userSchemaProviders,
+    ...databaseProviders,
+  ],
 })
 export class AuthModule { }

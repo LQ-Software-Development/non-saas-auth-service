@@ -21,6 +21,9 @@ export class User {
   emailToken: string;
 
   @Prop()
+  passwordToken?: string;
+
+  @Prop()
   document: string;
 
   @Prop({ default: now() })
@@ -46,6 +49,7 @@ export interface UserSchemaInterface {
   document: string;
   verifiedEmail: boolean;
   emailToken: string; // token to verify email ex. 123456
+  passwordToken?: string; // token to recover password
   createdAt: Date;
   updatedAt: Date;
   metadata: Record<string, any>;

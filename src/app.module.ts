@@ -10,6 +10,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { AdminModule } from './admin/admin.module';
 import { ProfilesModule } from './profiles/profiles.module';
 import { AccessesModule } from './accesses/accesses.module';
+import { RecoveryModule } from './recovery/recovery.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { AccessesModule } from './accesses/accesses.module';
     AdminModule,
     ProfilesModule,
     AccessesModule,
+    RecoveryModule,
   ],
 })
 export class AppModule { }
