@@ -1,4 +1,5 @@
 import { Injectable, Inject, NotFoundException, InternalServerErrorException } from "@nestjs/common";
+import { randomInt } from "crypto";
 import { CreateRecoveryDto } from "../dto/create-recovery.dto";
 import { UserRepositoryInterface } from "../../auth/repositories/user.repository.interface";
 
@@ -10,7 +11,7 @@ export class CreateRecoveryGenerateCodeService {
     ) { }
 
     async execute(createRecoveryDto: CreateRecoveryDto) {
-        const token = Math.floor(100000 + Math.random() * 900000).toString();
+        const token = randomInt(100000, 1000000).toString();
         // Busca usuário pelo e-mail
         const user = await this.userRepository.findByEmail(createRecoveryDto.email);
         if (!user) {
