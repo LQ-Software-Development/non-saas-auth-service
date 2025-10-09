@@ -430,7 +430,14 @@ export class UsersService {
     };
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: string) {
+    // removes participants and user
+    const participants = await this.participantModel.find({ userId: id }).lean();
+    await this.participantModel.deleteMany({ userId: id });
+    const user = await this.userModel.findByIdAndDelete(id);
+    return {
+      user,
+      participants,
+    };
   }
 }
