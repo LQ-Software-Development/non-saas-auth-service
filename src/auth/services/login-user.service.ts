@@ -80,6 +80,8 @@ export class LoginUserService {
         name: user.name,
         email: user.email,
         verifiedEmail: user.verifiedEmail,
+        document: user.document,
+        phone: user.phone,
       });
 
       return Result.ok({
