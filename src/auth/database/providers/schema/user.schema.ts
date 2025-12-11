@@ -37,9 +37,24 @@ export class User {
 
   @Prop({ required: false })
   phone?: string;
+
+  @Prop({ required: false })
+  index?: number;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
+
+// Auto-increment index
+UserSchema.pre('save', async function (next) {
+  if (this.isNew && !this.index) {
+    const lastUser = await this.constructor
+      .findOne({}, { index: 1 })
+      .sort({ index: -1 })
+      .lean();
+    this.index = lastUser?.index ? lastUser.index + 1 : 1;
+  }
+  next();
+});
 
 export interface UserSchemaInterface {
   _id?: string;
@@ -54,6 +69,7 @@ export interface UserSchemaInterface {
   updatedAt: Date;
   metadata: Record<string, any>;
   phone?: string;
+  index?: number;
 }
 
 export const userSchemaProviders = [
