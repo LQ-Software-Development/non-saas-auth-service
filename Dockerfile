@@ -13,7 +13,11 @@ RUN npm install
 # Copy app source
 COPY . .
 
+# Build the application
 RUN npm run build
+
+# Verify build output
+RUN ls -la dist/ || echo "dist directory not found!"
 
 # Expose the listening port
 EXPOSE 3000

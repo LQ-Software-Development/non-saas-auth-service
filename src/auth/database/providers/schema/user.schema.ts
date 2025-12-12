@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Connection, HydratedDocument, now } from 'mongoose';
+import { Connection, HydratedDocument, Model, now } from 'mongoose';
 
 export type UserDocument = HydratedDocument<User>;
 
@@ -37,9 +37,25 @@ export class User {
 
   @Prop({ required: false })
   phone?: string;
+
+  @Prop({ required: false })
+  index?: number;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
+
+// Auto-increment index
+UserSchema.pre('save', async function (next) {
+  if (this.isNew && !this.index) {
+    const UserModel = this.constructor as Model<User>;
+    const lastUser = await UserModel
+      .findOne({}, { index: 1 })
+      .sort({ index: -1 })
+      .lean();
+    this.index = lastUser?.index ? lastUser.index + 1 : 1;
+  }
+  next();
+});
 
 export interface UserSchemaInterface {
   _id?: string;
@@ -54,6 +70,7 @@ export interface UserSchemaInterface {
   updatedAt: Date;
   metadata: Record<string, any>;
   phone?: string;
+  index?: number;
 }
 
 export const userSchemaProviders = [
