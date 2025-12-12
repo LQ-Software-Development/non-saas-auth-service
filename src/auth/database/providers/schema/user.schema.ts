@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Connection, HydratedDocument, now } from 'mongoose';
+import { Connection, HydratedDocument, Model, now } from 'mongoose';
 
 export type UserDocument = HydratedDocument<User>;
 
@@ -47,7 +47,8 @@ export const UserSchema = SchemaFactory.createForClass(User);
 // Auto-increment index
 UserSchema.pre('save', async function (next) {
   if (this.isNew && !this.index) {
-    const lastUser = await this.constructor
+    const UserModel = this.constructor as Model<User>;
+    const lastUser = await UserModel
       .findOne({}, { index: 1 })
       .sort({ index: -1 })
       .lean();
