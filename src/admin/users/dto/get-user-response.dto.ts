@@ -17,6 +17,9 @@ export class GetUserResponseDto {
   @ApiProperty({ description: 'Documento do usuário', required: false })
   document?: string;
 
+  @ApiProperty({ description: 'Índice sequencial do usuário', required: false })
+  index?: number;
+
   @ApiProperty({ type: [OrganizationAccessFormatDto], description: 'Acessos do usuário às organizações' })
   accesses: OrganizationAccessFormatDto[];
 } 

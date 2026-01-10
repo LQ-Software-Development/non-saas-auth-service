@@ -50,6 +50,7 @@ export class UsersService {
     const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
 
     const user = await this.userModel.create({
+      name: createUserDto.name,
       email: createUserDto.email,
       document: createUserDto.document,
       phone: createUserDto.phone,
