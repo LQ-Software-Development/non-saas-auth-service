@@ -10,6 +10,7 @@ import {
 import { DeleteOrganizationParticipantService } from './services/delete-organization-participant.service';
 import { User, UserSchema } from 'src/auth/database/providers/schema/user.schema';
 import { UpdateOrganizationParticipantService } from './services/update-organization-participant.service';
+import { GetOrganizationParticipantService } from './services/get-organization-participant.service';
 
 @Module({
   imports: [
@@ -22,8 +23,9 @@ import { UpdateOrganizationParticipantService } from './services/update-organiza
   providers: [
     CreateOrganizationParticipantsService,
     ListOrganizationParticipantsService,
+    GetOrganizationParticipantService,
     DeleteOrganizationParticipantService,
     UpdateOrganizationParticipantService,
   ],
 })
-export class ParticipantsModule {}
+export class ParticipantsModule { }

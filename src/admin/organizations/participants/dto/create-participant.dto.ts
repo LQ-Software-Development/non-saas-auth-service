@@ -1,5 +1,5 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsOptional } from 'class-validator';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { IsNotEmpty, IsOptional, IsObject } from 'class-validator';
 
 export class CreateParticipantDto {
   @ApiProperty({
@@ -43,4 +43,28 @@ export class CreateParticipantDto {
   })
   @IsOptional()
   role: string;
+
+  @ApiPropertyOptional({
+    description: 'Metadata of the participant, including optional commission configuration',
+    example: {
+      commissionConfig: {
+        type: 'percentage',
+        baseCommission: 12,
+        newClientCommission: 15,
+        rules: {
+          calculationBase: 'paid_sale',
+          deductAsaasFees: false,
+          transferClientAfterInactivation: true,
+          notifyBeforeInactivation: false,
+        },
+        paymentInfo: {
+          account: '12345678900',
+          gateway: 'asaas',
+        },
+      },
+    },
+  })
+  @IsOptional()
+  @IsObject()
+  metadata?: Record<string, any>;
 }

@@ -16,6 +16,7 @@ import { ApplicationKeyGuard } from 'src/auth/guards/application-key.guard';
 import { DeleteOrganizationParticipantService } from './services/delete-organization-participant.service';
 import { UpdateParticipantDto } from './dto/update-participant.dto';
 import { UpdateOrganizationParticipantService } from './services/update-organization-participant.service';
+import { GetOrganizationParticipantService } from './services/get-organization-participant.service';
 
 @ApiHeader({
   name: 'application-key',
@@ -29,9 +30,10 @@ export class ParticipantsController {
   constructor(
     private readonly createOrganizationParticipantsService: CreateOrganizationParticipantsService,
     private readonly listOrganizationParticipantsService: ListOrganizationParticipantsService,
+    private readonly getOrganizationParticipantService: GetOrganizationParticipantService,
     private readonly deleteOrganizationParticipantService: DeleteOrganizationParticipantService,
     private readonly updateOrganizationParticipantService: UpdateOrganizationParticipantService,
-  ) {}
+  ) { }
 
   @ApiBody({
     type: [CreateParticipantDto],
@@ -50,6 +52,14 @@ export class ParticipantsController {
   @Get()
   findAll(@Param('organizationId') organizationId: string) {
     return this.listOrganizationParticipantsService.execute(organizationId);
+  }
+
+  @Get(':id')
+  findOne(
+    @Param('organizationId') organizationId: string,
+    @Param('id') id: string,
+  ) {
+    return this.getOrganizationParticipantService.execute(organizationId, id);
   }
 
   @Patch(':id')
