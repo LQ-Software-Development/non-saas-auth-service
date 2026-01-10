@@ -11,6 +11,8 @@ import { AdminModule } from './admin/admin.module';
 import { ProfilesModule } from './profiles/profiles.module';
 import { AccessesModule } from './accesses/accesses.module';
 import { RecoveryModule } from './recovery/recovery.module';
+import { CustomersModule } from './customers/customers.module';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
   imports: [
@@ -32,6 +34,7 @@ import { RecoveryModule } from './recovery/recovery.module';
     ProfilesModule,
     AccessesModule,
     RecoveryModule,
+    CustomersModule,
   ],
 })
 export class AppModule { }

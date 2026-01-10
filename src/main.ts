@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as dotenv from 'dotenv';
 import { LogLevel } from '@nestjs/common';
+import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
 dotenv.config();
 
@@ -10,6 +11,28 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     logger: [(process.env.LOG_LEVEL as LogLevel | null) || 'error'],
   });
+
+  if (process.env.REDIS_HOST && process.env.REDIS_PORT) {
+    const redisHost = process.env.REDIS_HOST;
+    const redisPort = parseInt(process.env.REDIS_PORT, 10);
+    const redisPassword = process.env.REDIS_PASSWORD || undefined;
+
+    console.log('Configurando microserviço Redis Pub/Sub...');
+    app.connectMicroservice<MicroserviceOptions>({
+      transport: Transport.REDIS,
+      options: {
+        host: redisHost,
+        port: redisPort,
+        password: redisPassword || undefined,
+        retryAttempts: 5,
+        retryDelay: 3000,
+      },
+    });
+    console.log(`Microserviço Redis conectado em ${redisHost}:${redisPort}`);
+  }
+
+  await app.startAllMicroservices();
+
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Microserviço de Autenticação')
     .setDescription(
