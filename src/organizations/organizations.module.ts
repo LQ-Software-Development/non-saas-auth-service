@@ -7,6 +7,7 @@ import {
   OrganizationSchema,
 } from './entities/organization.schema';
 import { ParticipantsModule } from './participants/participants.module';
+import { PositionsModule } from './positions/positions.module';
 
 @Module({
   imports: [
@@ -14,8 +15,9 @@ import { ParticipantsModule } from './participants/participants.module';
       { name: Organization.name, schema: OrganizationSchema },
     ]),
     ParticipantsModule,
+    PositionsModule,
   ],
   controllers: [OrganizationsController],
   providers: [OrganizationsService],
 })
-export class OrganizationsModule {}
+export class OrganizationsModule { }

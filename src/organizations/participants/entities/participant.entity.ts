@@ -1,4 +1,5 @@
 import { Prop, raw, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { ParticipantPermissions } from '../types/permissions.type';
 
 @Schema()
 export class Participant {
@@ -23,8 +24,12 @@ export class Participant {
   @Prop()
   userId: string;
 
+  /** ID do cargo (Position) vinculado ao participante */
+  @Prop()
+  positionId?: string;
+
   @Prop(raw({}))
-  permissions?: Record<string, any>;
+  permissions?: ParticipantPermissions;
 
   @Prop(raw({}))
   metadata: Record<string, any>;
