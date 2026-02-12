@@ -9,6 +9,8 @@ declare global {
       MONGO_URL: string;
       AUTH_URL: number;
       EMAIL_VERIFICATION_SENDER_URL: string;
+      CUSTOMER_LOGIN_URL?: string;
+      CUSTOMER_USER_INTEGRATION_ENABLED?: string;
       NODEMAILER_HOST: string;
       NODEMAILER_PORT: number;
       NODEMAILER_USER: string;

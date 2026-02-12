@@ -14,6 +14,18 @@ export class Organization {
   @Prop(raw({}))
   metadata: Record<string, any>;
 
+  @Prop({ default: false })
+  customerUserIntegrationEnabled?: boolean;
+
+  @Prop(raw({}))
+  branding?: {
+    appName?: string;
+    logoUrl?: string;
+    primaryColor?: string;
+    backgroundColor?: string;
+    footerText?: string;
+  };
+
   @Prop({ default: true })
   active: boolean;
 
