@@ -13,4 +13,4 @@ import { SendCustomerAccessEmailService } from './services/send-customer-access-
   ],
   exports: [SendCustomerAccessEmailService],
 })
-export class EmailsModule {}
+export class EmailsModule { }

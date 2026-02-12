@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-namespace */
-export {};
+export { };
 
 // Here we declare the members of the process.env object, so that we
 // can use them in our application code in a type-safe manner.
