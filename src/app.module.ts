@@ -13,6 +13,7 @@ import { AccessesModule } from './accesses/accesses.module';
 import { RecoveryModule } from './recovery/recovery.module';
 import { CustomersModule } from './customers/customers.module';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { RedisModule } from './redis/redis.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
       signOptions: { expiresIn: '90d' },
     }),
     EventEmitterModule.forRoot(),
+    RedisModule,
     DatabaseModule,
     AuthModule,
     EmailsModule,

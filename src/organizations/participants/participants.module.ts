@@ -1,12 +1,16 @@
 import { Module } from '@nestjs/common';
-import { ParticipantsService } from './participants.service';
-import { ParticipantsController } from './participants.controller';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Participant, ParticipantSchema } from './entities/participant.entity';
 import {
   User,
   UserSchema,
 } from 'src/auth/database/providers/schema/user.schema';
+import { ParticipantsController } from './participants.controller';
+import { Participant, ParticipantSchema } from './entities/participant.entity';
+import { CreateParticipantService } from './services/create-participant.service';
+import { GetParticipantsService } from './services/get-participants.service';
+import { GetParticipantService } from './services/get-participant.service';
+import { UpdateParticipantService } from './services/update-participant.service';
+import { RemoveParticipantService } from './services/remove-participant.service';
 
 @Module({
   imports: [
@@ -16,6 +20,12 @@ import {
     ]),
   ],
   controllers: [ParticipantsController],
-  providers: [ParticipantsService],
+  providers: [
+    CreateParticipantService,
+    GetParticipantsService,
+    GetParticipantService,
+    UpdateParticipantService,
+    RemoveParticipantService,
+  ],
 })
-export class ParticipantsModule {}
+export class ParticipantsModule { }

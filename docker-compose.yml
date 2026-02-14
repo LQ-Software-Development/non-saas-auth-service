@@ -8,6 +8,15 @@ services:
       - MONGO_INITDB_ROOT_PASSWORD=password
     volumes:
       - mongodb_data:/data/db
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+
   # api:
   #   build:
   #     context: .
@@ -23,7 +32,11 @@ services:
   #     - AUTH_DB_URL=mongodb://root:password@mongo:27017
   #     - DB_COLLECTION_NAME=auth
   #     - JWT_SECRET=your_jwt_secret
+  #     - REDIS_HOST=redis
+  #     - REDIS_PORT=6379
   #   depends_on:
   #     - mongo
+  #     - redis
 volumes:
   mongodb_data:
+  redis_data:

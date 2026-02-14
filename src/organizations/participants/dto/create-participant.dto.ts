@@ -28,6 +28,12 @@ export class CreateParticipantDto {
   organizationId: string;
 
   @ApiPropertyOptional({
+    description: 'ID do cargo (Position) vinculado ao participante',
+    example: '507f1f77bcf86cd799439011',
+  })
+  positionId?: string;
+
+  @ApiPropertyOptional({
     description: 'Metadata of the participant',
     example: { key: 'value' },
   })
