@@ -13,6 +13,8 @@ import { AccessesModule } from './accesses/accesses.module';
 import { RecoveryModule } from './recovery/recovery.module';
 import { CustomersModule } from './customers/customers.module';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { ApplicationKeysModule } from './application-keys/application-keys.module';
+import { VillaJoiasModule } from './villa-joias/villa-joias.module';
 
 @Module({
   imports: [
@@ -35,6 +37,8 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
     AccessesModule,
     RecoveryModule,
     CustomersModule,
+    ApplicationKeysModule,
+    VillaJoiasModule,
   ],
 })
 export class AppModule { }
