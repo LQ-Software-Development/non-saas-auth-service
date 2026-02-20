@@ -29,6 +29,9 @@ export class Organization {
   @Prop({ default: true })
   active: boolean;
 
+  @Prop({ required: false, unique: true, sparse: true })
+  applicationKey?: string;
+
   @Prop()
   ownerId: string;
 
