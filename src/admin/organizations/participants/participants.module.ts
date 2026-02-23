@@ -11,12 +11,17 @@ import { DeleteOrganizationParticipantService } from './services/delete-organiza
 import { User, UserSchema } from 'src/auth/database/providers/schema/user.schema';
 import { UpdateOrganizationParticipantService } from './services/update-organization-participant.service';
 import { GetOrganizationParticipantService } from './services/get-organization-participant.service';
+import {
+  Organization,
+  OrganizationSchema,
+} from 'src/organizations/entities/organization.schema';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: Participant.name, schema: ParticipantSchema },
       { name: User.name, schema: UserSchema },
+      { name: Organization.name, schema: OrganizationSchema },
     ]),
   ],
   controllers: [ParticipantsController],
