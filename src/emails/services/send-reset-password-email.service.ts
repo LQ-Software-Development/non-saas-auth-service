@@ -22,6 +22,7 @@ export class SendResetPasswordEmailService {
       {
         template: 'reset-password',
         data: {
+          subject: 'Recuperação de senha',
           name: user.name,
           resetLink: process.env.PASSWORD_RECOVERY_URL + '?token=' + token,
         },
