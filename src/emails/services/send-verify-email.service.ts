@@ -16,6 +16,7 @@ export class SendVerifyEmailService {
       {
         template: 'verify-email',
         data: {
+          subject: 'Verificação de e-mail',
           name: user.name,
           verificationCode: user.emailToken,
         },
