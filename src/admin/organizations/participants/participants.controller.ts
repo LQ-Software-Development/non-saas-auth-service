@@ -1,29 +1,29 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Param,
-  UseGuards,
+  Controller,
   Delete,
+  Get,
+  Param,
   Patch,
+  Post,
+  UseGuards,
 } from '@nestjs/common';
-import { CreateParticipantDto } from './dto/create-participant.dto';
-import { CreateOrganizationParticipantsService } from './services/create-organization-participants.service';
-import { ListOrganizationParticipantsService } from './services/list-organization-participants.service';
 import { ApiBody, ApiHeader, ApiTags } from '@nestjs/swagger';
-import { ApplicationKeyGuard } from 'src/auth/guards/application-key.guard';
-import { DeleteOrganizationParticipantService } from './services/delete-organization-participant.service';
+import { AdminApplicationKeyGuard } from 'src/auth/guards/admin-application-key.guard';
+import { CreateParticipantDto } from './dto/create-participant.dto';
 import { UpdateParticipantDto } from './dto/update-participant.dto';
-import { UpdateOrganizationParticipantService } from './services/update-organization-participant.service';
+import { CreateOrganizationParticipantsService } from './services/create-organization-participants.service';
+import { DeleteOrganizationParticipantService } from './services/delete-organization-participant.service';
 import { GetOrganizationParticipantService } from './services/get-organization-participant.service';
+import { ListOrganizationParticipantsService } from './services/list-organization-participants.service';
+import { UpdateOrganizationParticipantService } from './services/update-organization-participant.service';
 
 @ApiHeader({
   name: 'application-key',
   required: true,
   description: 'Application Key for Admin Access',
 })
-@UseGuards(ApplicationKeyGuard)
+@UseGuards(AdminApplicationKeyGuard)
 @ApiTags('Admin | Organizations | Participants')
 @Controller('admin/organizations/:organizationId/participants')
 export class ParticipantsController {
