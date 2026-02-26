@@ -1,20 +1,20 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { UsersService } from './users.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { GetUserResponseDto } from './dto/get-user-response.dto';
 import { ApiHeader, ApiTags } from '@nestjs/swagger';
-import { ApplicationKeyGuard } from 'src/auth/guards/application-key.guard';
+import { AdminApplicationKeyGuard } from 'src/auth/guards/admin-application-key.guard';
+import { CreateUserDto } from './dto/create-user.dto';
+import { GetUserResponseDto } from './dto/get-user-response.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { UsersService } from './users.service';
 
 @ApiTags('Users Management')
 @ApiHeader({
@@ -22,7 +22,7 @@ import { ApplicationKeyGuard } from 'src/auth/guards/application-key.guard';
   required: true,
   description: 'Application Key for Admin Access',
 })
-@UseGuards(ApplicationKeyGuard)
+@UseGuards(AdminApplicationKeyGuard)
 @Controller('admin/users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) { }

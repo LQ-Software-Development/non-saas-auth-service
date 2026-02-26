@@ -11,15 +11,15 @@ import {
 } from '@nestjs/common';
 
 import { ApiHeader } from '@nestjs/swagger';
-import { ApplicationKeyGuard } from 'src/auth/guards/application-key.guard';
 import { OrganizationService } from './organizatons.service';
+import { AdminApplicationKeyGuard } from 'src/auth/guards/admin-application-key.guard';
 
 @ApiHeader({
   name: 'application-key',
   required: true,
   description: 'Application Key for Admin Access',
 })
-@UseGuards(ApplicationKeyGuard)
+@UseGuards(AdminApplicationKeyGuard)
 @Controller('admin/organizations')
 export class OrganizationController {
   constructor(private readonly organizationService: OrganizationService) {}
