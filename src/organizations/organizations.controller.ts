@@ -12,15 +12,22 @@ import {
 import { OrganizationsService } from './organizations.service';
 import { CreateOrganizationDto } from './dto/create-organization.dto';
 import { UpdateOrganizationDto } from './dto/update-organization.dto';
-import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { UpdateSetupProgressDto } from './dto/update-setup-progress.dto';
+import { ApiBearerAuth, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { UpdateSetupProgressService } from './services/update-setup-progress.service';
+import { GetSetupProgressService } from './services/get-setup-progress.service';
 
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @ApiTags('Organizations')
 @Controller('organizations')
 export class OrganizationsController {
-  constructor(private readonly organizationsService: OrganizationsService) {}
+  constructor(
+    private readonly organizationsService: OrganizationsService,
+    private readonly updateSetupProgressService: UpdateSetupProgressService,
+    private readonly getSetupProgressService: GetSetupProgressService,
+  ) {}
 
   @Post()
   create(
@@ -63,5 +70,20 @@ export class OrganizationsController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.organizationsService.remove(id);
+  }
+
+  @Get(':id/setup-progress')
+  @ApiOperation({ summary: 'Retorna o progresso de setup da organização' })
+  getSetupProgress(@Param('id') id: string) {
+    return this.getSetupProgressService.execute(id);
+  }
+
+  @Patch(':id/setup-progress')
+  @ApiOperation({ summary: 'Atualiza um passo do setup da organização' })
+  updateSetupProgress(
+    @Param('id') id: string,
+    @Body() dto: UpdateSetupProgressDto,
+  ) {
+    return this.updateSetupProgressService.execute(id, dto.stepKey, dto.completed ?? true);
   }
 }

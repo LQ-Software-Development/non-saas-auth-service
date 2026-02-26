@@ -7,6 +7,8 @@ import {
   OrganizationSchema,
 } from './entities/organization.schema';
 import { ParticipantsModule } from './participants/participants.module';
+import { UpdateSetupProgressService } from './services/update-setup-progress.service';
+import { GetSetupProgressService } from './services/get-setup-progress.service';
 
 @Module({
   imports: [
@@ -16,6 +18,6 @@ import { ParticipantsModule } from './participants/participants.module';
     ParticipantsModule,
   ],
   controllers: [OrganizationsController],
-  providers: [OrganizationsService],
+  providers: [OrganizationsService, UpdateSetupProgressService, GetSetupProgressService],
 })
 export class OrganizationsModule {}
