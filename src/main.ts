@@ -7,9 +7,18 @@ import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
 dotenv.config();
 
+const LOG_LEVEL_HIERARCHY: LogLevel[] = ['verbose', 'debug', 'log', 'warn', 'error'];
+
+function getLogLevels(): LogLevel[] {
+  const envLevel = (process.env.LOG_LEVEL as LogLevel) || 'error';
+  const index = LOG_LEVEL_HIERARCHY.indexOf(envLevel);
+  if (index === -1) return ['error', 'warn', 'log'];
+  return LOG_LEVEL_HIERARCHY.slice(index);
+}
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
-    logger: [(process.env.LOG_LEVEL as LogLevel | null) || 'error'],
+    logger: getLogLevels(),
   });
 
   if (process.env.REDIS_HOST && process.env.REDIS_PORT) {
