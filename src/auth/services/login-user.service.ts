@@ -63,6 +63,10 @@ export class LoginUserService {
       const { user, idString, identifierField, identifierValue } =
         await this._findAndValidateUser(data);
 
+      if (data.backoffice && !(user as any).superuser) {
+        throw new ForbiddenException('Only superusers can access the backoffice');
+      }
+
       const accesses = await this._getUserAccesses(
         user,
         idString,
