@@ -40,6 +40,9 @@ export class User {
 
   @Prop({ required: false })
   index?: number;
+
+  @Prop({ default: false })
+  superuser?: boolean;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
@@ -71,6 +74,7 @@ export interface UserSchemaInterface {
   metadata: Record<string, any>;
   phone?: string;
   index?: number;
+  superuser?: boolean;
 }
 
 export const userSchemaProviders = [
