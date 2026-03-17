@@ -43,6 +43,7 @@ export class LoginWithoutMetadataService {
             sub: user._id,
             id: user._id,
             _id: user._id,
+            superuser: user.superuser || false,
         });
 
         return { user: { [providedIdentifier]: user[providedIdentifier], id: user._id }, token };

@@ -10,19 +10,20 @@ import {
   UseGuards,
 } from '@nestjs/common';
 
-import { ApiHeader } from '@nestjs/swagger';
+import { ApiHeader, ApiBearerAuth } from '@nestjs/swagger';
 import { OrganizationService } from './organizatons.service';
 import { AdminApplicationKeyGuard } from 'src/auth/guards/admin-application-key.guard';
 
+@ApiBearerAuth()
 @ApiHeader({
   name: 'application-key',
-  required: true,
-  description: 'Application Key for Admin Access',
+  required: false,
+  description: 'Application Key for Admin Access (deprecated)',
 })
 @UseGuards(AdminApplicationKeyGuard)
 @Controller('admin/organizations')
 export class OrganizationController {
-  constructor(private readonly organizationService: OrganizationService) {}
+  constructor(private readonly organizationService: OrganizationService) { }
 
   @Post()
   create(@Body() bodyData) {

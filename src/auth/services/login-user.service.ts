@@ -82,6 +82,7 @@ export class LoginUserService {
         verifiedEmail: user.verifiedEmail,
         document: user.document,
         phone: user.phone,
+        superuser: (user as any).superuser || false,
       });
 
       return Result.ok({

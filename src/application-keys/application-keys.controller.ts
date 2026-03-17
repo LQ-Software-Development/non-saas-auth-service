@@ -5,17 +5,18 @@ import {
     Param,
     UseGuards,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiParam, ApiHeader } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiParam, ApiHeader, ApiBearerAuth } from '@nestjs/swagger';
 import { AdminApplicationKeyGuard } from '../auth/guards/admin-application-key.guard';
 import { GenerateApplicationKeyService } from './services/generate-application-key.service';
 import { RevokeApplicationKeyService } from './services/revoke-application-key.service';
 
 @ApiTags('Application Keys')
+@ApiBearerAuth()
 @UseGuards(AdminApplicationKeyGuard)
 @ApiHeader({
     name: 'application-key',
-    description: 'Application-key do admin (variável de ambiente)',
-    required: true,
+    description: 'Application-key do admin (deprecated)',
+    required: false,
 })
 @Controller('application-keys')
 export class ApplicationKeysController {
