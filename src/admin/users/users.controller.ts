@@ -9,7 +9,7 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { ApiHeader, ApiTags } from '@nestjs/swagger';
+import { ApiHeader, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { AdminApplicationKeyGuard } from 'src/auth/guards/admin-application-key.guard';
 import { CreateUserDto } from './dto/create-user.dto';
 import { GetUserResponseDto } from './dto/get-user-response.dto';
@@ -17,10 +17,11 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersService } from './users.service';
 
 @ApiTags('Users Management')
+@ApiBearerAuth()
 @ApiHeader({
   name: 'application-key',
-  required: true,
-  description: 'Application Key for Admin Access',
+  required: false,
+  description: 'Application Key for Admin Access (deprecated)',
 })
 @UseGuards(AdminApplicationKeyGuard)
 @Controller('admin/users')

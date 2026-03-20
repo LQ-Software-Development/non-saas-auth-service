@@ -5,7 +5,7 @@ import { LoginUserDto } from "../dto/login-user.dto";
 import { InjectModel } from "@nestjs/mongoose";
 import { User } from "../database/providers/schema/user.schema";
 import { Model } from "mongoose";
-import { Inject, NotFoundException } from "@nestjs/common";
+import { ForbiddenException, Inject, NotFoundException } from "@nestjs/common";
 
 export class LoginWithoutMetadataService {
     constructor(
@@ -39,10 +39,15 @@ export class LoginWithoutMetadataService {
             throw new NotFoundException('User not found');
         }
 
+        if (data.backoffice && !user.superuser) {
+            throw new ForbiddenException('Only superusers can access the backoffice');
+        }
+
         const token = this.jwtService.sign({
             sub: user._id,
             id: user._id,
             _id: user._id,
+            superuser: user.superuser || false,
         });
 
         return { user: { [providedIdentifier]: user[providedIdentifier], id: user._id }, token };

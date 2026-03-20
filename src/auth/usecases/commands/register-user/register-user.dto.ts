@@ -37,4 +37,6 @@ export class RegisterDto {
   })
   @IsOptional()
   metadata: any;
+
+  superuser?: boolean;
 }

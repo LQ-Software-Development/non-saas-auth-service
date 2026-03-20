@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsEmail, IsOptional, IsString, MinLength } from 'class-validator';
+import { IsBoolean, IsEmail, IsOptional, IsString, MinLength } from 'class-validator';
 
 export class LoginUserDto {
   @ApiProperty({
@@ -10,7 +10,7 @@ export class LoginUserDto {
   @IsOptional()
   @IsEmail()
   email?: string;
-  
+
   @ApiPropertyOptional({
     description: 'CPF ou CNPJ do Usuário',
     example: '12345678900',
@@ -20,7 +20,7 @@ export class LoginUserDto {
   @IsString()
   document?: string;
 
-    @ApiPropertyOptional({
+  @ApiPropertyOptional({
     description: 'Telefone do Usuário',
     example: '12345678900',
     required: false,
@@ -45,4 +45,11 @@ export class LoginUserDto {
   })
   @IsOptional()
   noMetadataOnToken?: boolean;
+
+  @ApiPropertyOptional({
+    description: 'Indica que o login é para o backoffice (somente superusers)',
+  })
+  @IsOptional()
+  @IsBoolean()
+  backoffice?: boolean;
 }

@@ -8,7 +8,7 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBody, ApiHeader, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiHeader, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { AdminApplicationKeyGuard } from 'src/auth/guards/admin-application-key.guard';
 import { CreateParticipantDto } from './dto/create-participant.dto';
 import { UpdateParticipantDto } from './dto/update-participant.dto';
@@ -18,10 +18,11 @@ import { GetOrganizationParticipantService } from './services/get-organization-p
 import { ListOrganizationParticipantsService } from './services/list-organization-participants.service';
 import { UpdateOrganizationParticipantService } from './services/update-organization-participant.service';
 
+@ApiBearerAuth()
 @ApiHeader({
   name: 'application-key',
-  required: true,
-  description: 'Application Key for Admin Access',
+  required: false,
+  description: 'Application Key for Admin Access (deprecated)',
 })
 @UseGuards(AdminApplicationKeyGuard)
 @ApiTags('Admin | Organizations | Participants')
